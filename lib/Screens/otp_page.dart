@@ -8,7 +8,7 @@ import 'login_page.dart';
 
 class OtpPage extends StatelessWidget {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String signature = await SmsRetrieved.getAppSignature();
+//   String signature = await SmsRetrieved.getAppSignature();
   @override
   Widget build(BuildContext context) {
 
