@@ -1,6 +1,5 @@
-
-import 'package:delivery_app/Screens/phone_login.dart';
-import 'package:delivery_app/Widgets/sign_in.dart';
+import 'package:delivery_app/Src/blocs/validation_bloc.dart';
+import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 
 import 'register_page.dart';
@@ -13,7 +12,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _validate = false;
+  final TextEditingController _phoneNumberController = TextEditingController();
+  ValidationBloc _validationBloc = new ValidationBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +30,24 @@ class _LoginPageState extends State<LoginPage> {
               Image.asset('assets/Logo.jpg'),
               SizedBox(height: 50),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: TextField(
-                  controller: phoneController,
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                  decoration: InputDecoration(
-                      labelText: "Phone Number",
-                      errorText: _validate ? 'Value Can\'t Be Empty' : null,
-                      prefixIcon:
-                          Container(width: 50, child: Icon(Icons.phone)),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xffCED0D2), width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(6)))),
-                ),
-              ),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: StreamBuilder(
+                    stream: _validationBloc.phoneNumberStream,
+                    builder: (context, snapshot) => TextField(
+                      controller: _phoneNumberController,
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                      decoration: InputDecoration(
+                          errorText: snapshot.hasError ? snapshot.error : null,
+                          labelText: "Phone Number",
+                          prefixIcon:
+                              Container(width: 50, child: Icon(Icons.phone)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffCED0D2), width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6)))),
+                    ),
+                  )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: SizedBox(
@@ -86,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
       splashColor: Colors.grey,
       onPressed: () {
         signInWithGoogle().then((result) {
+          print(result);
           if (result != null) {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -124,10 +128,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onLoginClick() {
-    setState(() {
-      phoneController.text.isEmpty ? _validate = true : _validate = false;
-    });
-    if (!phoneController.text.isEmpty) {
+    print('Validation ne');
+    if (_validationBloc.isValidLogIn(_phoneNumberController.text)) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => RegisterPage()),

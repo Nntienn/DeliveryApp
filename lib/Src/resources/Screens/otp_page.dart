@@ -1,14 +1,11 @@
-import 'package:delivery_app/Screens/register_page.dart';
-import 'package:delivery_app/Widgets/sign_in.dart';
+
+import 'package:delivery_app/Src/configs/constants.dart';
+import 'package:delivery_app/Src/resources/Screens/home_page.dart';
+import 'package:delivery_app/Src/resources/Screens/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
-import '../constants.dart';
-import 'login_page.dart';
 
 class OtpPage extends StatelessWidget {
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
-//   String signature = await SmsRetrieved.getAppSignature();
   @override
   Widget build(BuildContext context) {
 
@@ -133,8 +130,8 @@ class OtpPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (context) => ()))
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => HomePage()));
                 },
                 color: kPrimaryColor,
                 textColor: Colors.white,

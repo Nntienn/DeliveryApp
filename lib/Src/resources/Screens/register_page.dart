@@ -166,13 +166,6 @@ class RegisterPage extends StatelessWidget {
                         child: Text(
                           'We will send verification code on above given number',
                           style: TextStyle(color: Colors.black26),)),
-                    FlatButton(
-
-                      onPressed: () {
-                        signOutGoogle();
-                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
-                      },
-                    )
                   ],
                 ),
               )

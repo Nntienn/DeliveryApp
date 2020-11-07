@@ -1,7 +1,6 @@
 
+import 'package:delivery_app/Src/resources/Screens/login_page.dart';
 import 'package:flutter/material.dart';
-
-import 'Screens/login_page.dart';
 
 
 class MyApp extends StatelessWidget {
