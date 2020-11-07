@@ -1,7 +1,7 @@
-import 'package:delivery_app/Screens/login_page.dart';
+
 import 'package:flutter/material.dart';
-import "package:otp_text_field/otp_field.dart";
-import 'package:otp_text_field/style.dart';
+
+import 'login_page.dart';
 
 class PhoneLogin extends StatelessWidget {
   @override

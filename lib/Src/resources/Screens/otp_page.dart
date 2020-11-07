@@ -1,4 +1,3 @@
-// import 'package:delivery_app/Screens/main_page.dart';
 import 'package:delivery_app/Screens/register_page.dart';
 import 'package:delivery_app/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'login_page.dart';
 
 class OtpPage extends StatelessWidget {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-  // String signature = await SmsRetrieved.getAppSignature();
+//   String signature = await SmsRetrieved.getAppSignature();
   @override
   Widget build(BuildContext context) {
 
@@ -133,10 +132,10 @@ class OtpPage extends StatelessWidget {
               height: 60,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
-                // onPressed: () {
-                //   Navigator.push(
-                //       context, MaterialPageRoute(builder: (context) => MainPage()));
-                // },
+                onPressed: () {
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (context) => ()))
+                },
                 color: kPrimaryColor,
                 textColor: Colors.white,
                 child: Text(

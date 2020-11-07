@@ -1,12 +1,10 @@
-import 'package:delivery_app/Screens/otp_page.dart';
-import 'package:delivery_app/Widgets/sign_in.dart';
-import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import 'package:flutter/material.dart';
+import 'package:delivery_app/Src/configs/constants.dart';
 import 'login_page.dart';
+import 'otp_page.dart';
 
 class RegisterPage extends StatelessWidget {
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
