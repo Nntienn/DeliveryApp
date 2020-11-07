@@ -1,3 +1,4 @@
+// import 'package:delivery_app/Screens/main_page.dart';
 import 'package:delivery_app/Screens/register_page.dart';
 import 'package:delivery_app/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
@@ -132,10 +133,10 @@ class OtpPage extends StatelessWidget {
               height: 60,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (context) => ()))
-                },
+                // onPressed: () {
+                //   Navigator.push(
+                //       context, MaterialPageRoute(builder: (context) => MainPage()));
+                // },
                 color: kPrimaryColor,
                 textColor: Colors.white,
                 child: Text(

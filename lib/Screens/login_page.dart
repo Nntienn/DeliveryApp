@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: phoneController,
                   style: TextStyle(fontSize: 18, color: Colors.black),
                   decoration: InputDecoration(
@@ -86,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
       splashColor: Colors.grey,
       onPressed: () {
         signInWithGoogle().then((result) {
+          print("Tao la result ne: "+result);
           if (result != null) {
             Navigator.of(context).push(
               MaterialPageRoute(

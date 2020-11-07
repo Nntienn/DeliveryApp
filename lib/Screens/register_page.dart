@@ -145,8 +145,10 @@ class RegisterPage extends StatelessWidget {
                               .size
                               .width * 0.8,
                           child: TextField(
+                            readOnly: true,
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
+                              prefixText: phoneController.text,
                               labelText: "PHONE",
                               labelStyle: TextStyle(color: Colors.black),
                               border: InputBorder.none,
@@ -166,6 +168,13 @@ class RegisterPage extends StatelessWidget {
                         child: Text(
                           'We will send verification code on above given number',
                           style: TextStyle(color: Colors.black26),)),
+                    FlatButton(
+
+                      onPressed: () {
+                        signOutGoogle();
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
+                      },
+                    )
                   ],
                 ),
               )
