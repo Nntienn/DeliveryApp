@@ -26,17 +26,17 @@ class OtpPage extends StatelessWidget {
                   'Verification',
                   style: TextStyle(color: Colors.black),
                 ),
-                leading: FlatButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      );
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                    )),
+                // leading: FlatButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => RegisterPage()),
+                //       );
+                //     },
+                //     child: Icon(
+                //       Icons.arrow_back_ios,
+                //       color: Colors.black,
+                //     )),
               ),
               Container(
                 height: 5,
