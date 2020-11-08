@@ -10,30 +10,54 @@ class ValidationBloc {
   Stream get emailStream => _emailController.stream;
   Stream get phoneNumberStream => _phoneNumberController.stream;
 
+  void setPhoneNumberControllerError(String err) {
+    _phoneNumberController.sink.addError(err);
+  }
+
   bool isValidLogIn(String phone) {
-    if (!Validation.isValidPhone(phone)) {
-      print('Vao roi');
-      _phoneNumberController.sink.addError("Nhập số điện thoại");
+    int check = Validation.isValidPhone(phone);
+    if (check == 0) {
+      _phoneNumberController.sink.addError("Please enter mobile number");
+      return false;
+    } else if (check == 1) {
+      _phoneNumberController.sink.addError("Please enter valid mobile number");
+      return false;
+    }
+    return true;
+  }
+
+  bool isValidEmail(String email) {
+    int check = Validation.isValidEmail(email);
+    if (check == 0) {
+      _emailController.sink.addError("Please enter email");
+      return false;
+    } else if (check == 1) {
+      _emailController.sink.addError("Please enter valid email");
+      return false;
+    }
+    return true;
+  }
+
+  bool isValidName(String name) {
+    if (!Validation.isValidName(name)) {
+      _nameController.sink.addError("Enter full name");
       return false;
     }
     return true;
   }
 
   bool isValidRegister(String name, String email, String phone) {
-    if (!Validation.isValidName(name)) {
-      _nameController.sink.addError("Nhập họ tên đầy đủ");
+    if (!isValidName(name)) {
       return false;
     }
     _nameController.sink.add("Ok");
 
-    if (!Validation.isValidEmail(email)) {
-      _emailController.sink.addError("Nhập email");
+    if (!isValidEmail(email)) {
       return false;
     }
     _emailController.sink.add("Ok");
 
-    if (!Validation.isValidPhone(phone)) {
-      _phoneNumberController.sink.addError("Nhập số điện thoại");
+    if (!isValidLogIn(phone)) {
       return false;
     }
     _phoneNumberController.sink.add("Ok");

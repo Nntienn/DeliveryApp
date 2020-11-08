@@ -1,6 +1,9 @@
+import 'package:delivery_app/Src/blocs/login_bloc.dart';
 import 'package:delivery_app/Src/blocs/validation_bloc.dart';
+import 'package:delivery_app/Src/resources/Screens/otp_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import 'register_page.dart';
 
@@ -13,7 +16,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  ValidationBloc _validationBloc = new ValidationBloc();
+  final ValidationBloc _validationBloc = new ValidationBloc();
+  final LoginBloc _loginBloc = new LoginBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Container(
-                constraints: BoxConstraints.loose(Size(double.infinity, 50)),
-                alignment: AlignmentDirectional.centerEnd,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Text(
-                    "Forgot password?",
-                    style: TextStyle(fontSize: 16, color: Color(0xff606470)),
-                  ),
-                ),
-              ),
               _signInButton(),
             ],
           ),
@@ -89,16 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       splashColor: Colors.grey,
       onPressed: () {
         signInWithGoogle().then((result) {
-          print(result);
-          if (result != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return RegisterPage();
-                },
-              ),
-            );
-          }
+          _onLoginWithGoogleClick(result.email);
         });
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -127,13 +111,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onLoginClick() {
-    print('Validation ne');
+  Future<void> _onLoginWithGoogleClick(String email) async {
+    Response response = await _loginBloc.getAccountJsonByEmail(email);
+    if (response.statusCode == 200) {
+      String checkRole = await _loginBloc.getAccountRole(response);
+      if (checkRole.compareTo("success") == 0) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OtpPage()));
+      } else if (checkRole.compareTo("fail") == 0) {
+        _validationBloc.setPhoneNumberControllerError("This phone number is registered in a different role.");
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => RegisterPage()));
+      }
+    }
+  }
+
+  Future<void> _onLoginClick() async {
     if (_validationBloc.isValidLogIn(_phoneNumberController.text)) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => RegisterPage()),
-      );
+      Response response = await _loginBloc.getAccountJsonByPhone(_phoneNumberController.text);
+      if (response.statusCode == 200) {
+        String checkRole = await _loginBloc.getAccountRole(response);
+        if (checkRole.compareTo("success") == 0) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OtpPage()));
+        } else if (checkRole.compareTo("fail") == 0) {
+          _validationBloc.setPhoneNumberControllerError("This phone number is registered in a different role.");
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RegisterPage()));
+        }
+      }
     }
   }
 }
