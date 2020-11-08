@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: StreamBuilder(
                     stream: _validationBloc.phoneNumberStream,
                     builder: (context, snapshot) => TextField(
+                      keyboardType: TextInputType.number,
                       controller: _phoneNumberController,
                       style: TextStyle(fontSize: 18, color: Colors.black),
                       decoration: InputDecoration(

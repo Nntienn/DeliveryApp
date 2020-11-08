@@ -1,7 +1,6 @@
 
 import 'package:delivery_app/Src/configs/constants.dart';
-import 'package:delivery_app/Src/resources/Screens/home_page.dart';
-import 'package:delivery_app/Src/resources/Screens/register_page.dart';
+import 'package:delivery_app/Src/resources/Screens/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 
@@ -131,7 +130,7 @@ class OtpPage extends StatelessWidget {
               child: FlatButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => HomePage()));
+                      context, MaterialPageRoute(builder: (context) => MainPage()));
                 },
                 color: kPrimaryColor,
                 textColor: Colors.white,
