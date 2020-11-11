@@ -146,7 +146,7 @@ class RegisterPage extends StatelessWidget {
                             readOnly: true,
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
-                              hintText: phoneController.text,
+                              prefixText: phoneNumberController.text,
                               labelText: "PHONE",
                               labelStyle: TextStyle(color: Colors.black),
                               border: InputBorder.none,

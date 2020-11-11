@@ -161,6 +161,7 @@ class MyPageState extends State<MainPage> {
               Feather.home,
               color: kGoodLightGray,
             ),
+            // ignore: deprecated_member_use
             title: Text('HOME'),
             activeIcon: Icon(
               Feather.home,
@@ -172,6 +173,7 @@ class MyPageState extends State<MainPage> {
               AntDesign.wallet,
               color: kGoodLightGray,
             ),
+            // ignore: deprecated_member_use
             title: Text('WALLET'),
             activeIcon: Icon(
               AntDesign.wallet,
@@ -183,6 +185,7 @@ class MyPageState extends State<MainPage> {
               FontAwesome.history,
               color: kGoodLightGray,
             ),
+            // ignore: deprecated_member_use
             title: Text('CALENDAR'),
             activeIcon: Icon(
               FontAwesome.history,
@@ -195,6 +198,7 @@ class MyPageState extends State<MainPage> {
               color: kGoodLightGray,
               size: 36,
             ),
+            // ignore: deprecated_member_use
             title: Text('PROFILE'),
             activeIcon: Icon(
               CupertinoIcons.profile_circled,

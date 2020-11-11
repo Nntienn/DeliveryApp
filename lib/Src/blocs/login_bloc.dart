@@ -3,10 +3,14 @@ import 'dart:convert';
 
 import 'package:delivery_app/Src/configs/link.dart';
 import 'package:delivery_app/Src/models/account.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class LoginBloc{
+  final codeController = new TextEditingController();
+
   Future<String> getAccountRole(Response response) async {
     final responseResult = response;
     if (responseResult.statusCode == 200) {
@@ -30,4 +34,5 @@ class LoginBloc{
   Future<http.Response> getAccountJsonByPhone(String phone) async {
     return http.get(GET_ACCOUNT_BY_PHONE + phone);
   }
+
 }

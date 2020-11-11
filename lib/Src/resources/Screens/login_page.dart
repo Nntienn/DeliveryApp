@@ -1,13 +1,17 @@
+
 import 'package:delivery_app/Src/blocs/login_bloc.dart';
 import 'package:delivery_app/Src/blocs/validation_bloc.dart';
+import 'package:delivery_app/Src/resources/Screens/home_page.dart';
 import 'package:delivery_app/Src/resources/Screens/otp_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 import 'register_page.dart';
 
-final phoneController = TextEditingController();
+final phoneNumberController = TextEditingController();
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,9 +19,71 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _phoneNumberController = TextEditingController();
   final ValidationBloc _validationBloc = new ValidationBloc();
   final LoginBloc _loginBloc = new LoginBloc();
+  final _codeController = new TextEditingController();
+
+  Future<void> _loginUser(String phone, BuildContext context) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumberController.text,
+        timeout: Duration(seconds: 120),
+        verificationCompleted: (AuthCredential credential) async {
+          Navigator.of(context).pop();
+          UserCredential result = await _auth.signInWithCredential(credential);
+
+          auth.User user = result.user;
+
+          if (user != null) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+          } else {
+            print('Error');
+          }
+        },
+        verificationFailed: (FirebaseAuthException exception) {
+          print('$exception');
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+            builder: (context) {
+                return AlertDialog (
+                  title: Text('Give the code'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _codeController,
+                      )
+                    ],
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                        child: Text('Confirm'),
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                        onPressed: () async {
+                          final code = _codeController.text.trim();
+                          AuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: code);
+
+                          UserCredential result = await _auth.signInWithCredential(credential);
+                          auth.User user = result.user;
+                          if (user != null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                          } else {
+                            print('Error');
+                          }
+                        },
+                    )
+                  ],
+                );
+            }
+          );
+        },
+        codeAutoRetrievalTimeout: null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                     stream: _validationBloc.phoneNumberStream,
                     builder: (context, snapshot) => TextField(
                       keyboardType: TextInputType.number,
-                      controller: _phoneNumberController,
+                      controller: phoneNumberController,
                       style: TextStyle(fontSize: 18, color: Colors.black),
                       decoration: InputDecoration(
                           errorText: snapshot.hasError ? snapshot.error : null,
@@ -59,7 +125,11 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 52,
                   child: RaisedButton(
-                    onPressed: _onLoginClick,
+                    onPressed: () {
+                      final phone = phoneNumberController.text;
+
+                      _loginUser(phone, context);
+                    },
                     child: Text(
                       "Log In",
                       style: TextStyle(color: Colors.white, fontSize: 18),
@@ -122,17 +192,17 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(builder: (context) => OtpPage()));
       } else if (checkRole.compareTo("fail") == 0) {
         _validationBloc.setPhoneNumberControllerError("This phone number is registered in a different role.");
-      } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RegisterPage()));
       }
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RegisterPage()));
     }
   }
 
   Future<void> _onLoginClick() async {
-    if (_validationBloc.isValidLogIn(_phoneNumberController.text)) {
-      Response response = await _loginBloc.getAccountJsonByPhone(_phoneNumberController.text);
+    if (_validationBloc.isValidLogIn(phoneNumberController.text)) {
+      Response response = await _loginBloc.getAccountJsonByPhone(phoneNumberController.text);
       if (response.statusCode == 200) {
         String checkRole = await _loginBloc.getAccountRole(response);
         if (checkRole.compareTo("success") == 0) {

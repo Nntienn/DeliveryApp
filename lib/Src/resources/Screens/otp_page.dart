@@ -8,7 +8,11 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final _verificationId = new TextEditingController();
+    //final _codeController = TextEditingController();
+
     int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *2;
+
     return Scaffold(
       body: Container(
           height: MediaQuery.of(context).size.height,
@@ -62,6 +66,7 @@ class OtpPage extends StatelessWidget {
                           margin: const EdgeInsets.fromLTRB(20, 22, 10, 0),
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextField(
+                            controller: _verificationId,
                             style: TextStyle(fontSize: 25, color: Colors.black),
                             decoration: InputDecoration(
                               labelText: "ENTER VERIFICATION CODE",
