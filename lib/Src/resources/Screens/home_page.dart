@@ -3,13 +3,24 @@ import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   SaveData save = new SaveData();
+
   String name = "";
+
   String phoneNum = "";
+
   String homeAddress = "";
+
   String id = "";
+
   String workAddress = "";
+
   String walletId = "";
 
   Future<void> getSender() async {
@@ -21,12 +32,13 @@ class HomePage extends StatelessWidget {
     walletId = await save.getWalletId();
   }
 
-
-
+  void initState() {
+    super.initState();
+    getSender();
+  }
 
   @override
   Widget build(BuildContext context) {
-    getSender();
     return Container(
       child: SingleChildScrollView(
         child: Column(
