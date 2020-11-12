@@ -40,6 +40,7 @@ dependencies:
   cloud_firestore: ^0.14.3
   google_fonts: ^1.1.0
   flutter_icons: ^1.0.0+1
+  shared_preferences: ^0.5.12+4
   custom_radio_grouped_button: ^1.0.6+1
 
 dev_dependencies:

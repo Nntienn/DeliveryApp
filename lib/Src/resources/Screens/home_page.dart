@@ -1,10 +1,32 @@
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
+  SaveData save = new SaveData();
+  String name = "";
+  String phoneNum = "";
+  String homeAddress = "";
+  String id = "";
+  String workAddress = "";
+  String walletId = "";
+
+  Future<void> getSender() async {
+    name = await save.getName();
+    phoneNum = await save.getPhoneNum();
+    homeAddress = await save.getHomeAddress();
+    workAddress = await save.getWorkAddress();
+    id = await save.getId();
+    walletId = await save.getWalletId();
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    getSender();
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -37,7 +59,7 @@ class HomePage extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: Text(
-                            'Nguyen Thai Binh',
+                            name,
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.bold),
                           ),
@@ -53,7 +75,7 @@ class HomePage extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Text(
-                            '+84854146162',
+                            phoneNum,
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.bold),
                           ),
@@ -67,7 +89,7 @@ class HomePage extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                         child: Text(
-                          'Địa chỉ',
+                          homeAddress,
                           style: TextStyle(color: Colors.black38, fontSize: 17),
                           textAlign: TextAlign.left,
                         ),
@@ -80,19 +102,19 @@ class HomePage extends StatelessWidget {
                         cursorColor: Colors.black26,
                         style: TextStyle(fontSize: 15),
                         decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                          contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
                           // enabledBorder: UnderlineInputBorder(
                           //   borderSide: BorderSide(color: Colors.black26),
                           // ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black26),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                            BorderRadius.all(Radius.circular(20.0)),
                           ),
                           border: OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                            BorderRadius.all(Radius.circular(20.0)),
                             borderSide: BorderSide(color: Colors.white24),
                             //borderSide: const BorderSide(),
                           ),
@@ -179,12 +201,12 @@ class HomePage extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black26),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                           ),
                           border: OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide(color: Colors.white24),
                             //borderSide: const BorderSide(),
                           ),
@@ -218,12 +240,12 @@ class HomePage extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black26),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                           ),
                           border: OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide(color: Colors.white24),
                             //borderSide: const BorderSide(),
                           ),
@@ -261,12 +283,12 @@ class HomePage extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black26),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                           ),
                           border: OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide(color: Colors.white24),
                             //borderSide: const BorderSide(),
                           ),
@@ -311,12 +333,12 @@ class HomePage extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black26),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                           ),
                           border: OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
+                            BorderRadius.all(Radius.circular(90.0)),
                             borderSide: BorderSide(color: Colors.white24),
                             //borderSide: const BorderSide(),
                           ),
