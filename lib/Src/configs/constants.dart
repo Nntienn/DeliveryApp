@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 const kPrimaryColor = Color(0xFF78c32b);
 const kPrimaryLightColor = Color(0xFFf7f8fc);
 
+const kDefaultPaddin = 20.0;
+
+const kTextLightColor = Color(0xFFACACAC);
 const kPurple = Color(0xFF6F51FF);
 const kYellow = Color(0xFFFFAD03);
 const kGreen = Color(0xFF22B274);
