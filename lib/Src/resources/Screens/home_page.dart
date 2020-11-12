@@ -1,32 +1,27 @@
-import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  SaveData save = new SaveData();
-  String name = "";
-  String phoneNum = "";
-  String homeAddress = "";
-  String id = "";
-  String workAddress = "";
-  String walletId = "";
+import 'main_page.dart';
 
-  Future<void> getSender() async {
-    name = await save.getName();
-    phoneNum = await save.getPhoneNum();
-    homeAddress = await save.getHomeAddress();
-    workAddress = await save.getWorkAddress();
-    id = await save.getId();
-    walletId = await save.getWalletId();
+
+
+class HomePage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MyHomeState();
   }
 
-
-
+}
+class _MyHomeState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context) {
-    getSender();
+    // initState(
+    //     getSender();
+    // );
+
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -91,7 +86,6 @@ class HomePage extends StatelessWidget {
                         child: Text(
                           homeAddress,
                           style: TextStyle(color: Colors.black38, fontSize: 17),
-                          textAlign: TextAlign.left,
                         ),
                       ),
                     ],
@@ -130,12 +124,10 @@ class HomePage extends StatelessWidget {
                       buttonLables: [
                         'Nhà',
                         'Cơ quan',
-                        'Teacher',
                       ],
                       buttonValues: [
                         1,
                         2,
-                        3,
                       ],
                       defaultSelected: 1,
                       radioButtonValue: (value) {
@@ -364,7 +356,13 @@ class HomePage extends StatelessWidget {
                     height: 60,
                     width: MediaQuery.of(context).size.width,
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if(name.length != 0) {
+                          print(name);
+                        }else{
+                          print('null');
+                        }
+                      },
                       // => Navigator.push(
                       //     context, MaterialPageRoute(builder: (context) => ())),
                       color: kPrimaryColor,

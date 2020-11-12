@@ -1,3 +1,4 @@
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/resources/Screens/history_page.dart';
 import 'package:delivery_app/Src/resources/Screens/profile_page.dart';
@@ -7,6 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import 'home_page.dart';
+
+SaveData save = new SaveData();
+String name = "";
+String phoneNum = "";
+String homeAddress = "";
+String id = "";
+String workAddress = "";
+String walletId = "";
+
+Future<void> getSender() async {
+  name = await save.getName();
+  phoneNum = await save.getPhoneNum();
+  homeAddress = await save.getHomeAddress();
+  workAddress = await save.getWorkAddress();
+  id = await save.getId();
+  walletId = await save.getWalletId();
+}
 
 class MainPage extends StatefulWidget {
   @override
@@ -19,7 +37,6 @@ class MyPageState extends State<MainPage> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
 
-
   List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     WalletPage(),
@@ -29,6 +46,7 @@ class MyPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    getSender();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
@@ -37,7 +55,7 @@ class MyPageState extends State<MainPage> {
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
         title: Text(
-          'Delivery App',
+          "Delivery App",
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
