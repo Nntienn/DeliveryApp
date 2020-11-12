@@ -2,15 +2,11 @@ import 'package:delivery_app/Src/blocs/login_bloc.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/blocs/validation_bloc.dart';
 import 'package:delivery_app/Src/models/sender.dart';
-import 'package:delivery_app/Src/resources/Screens/home_page.dart';
-import 'package:delivery_app/Src/resources/Screens/main_page.dart';
+import 'package:delivery_app/Src/resources/Screens/Loading.dart';
 import 'package:delivery_app/Src/resources/Screens/otp_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'register_page.dart';
 
@@ -24,7 +20,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final ValidationBloc _validationBloc = new ValidationBloc();
   final LoginBloc _loginBloc = new LoginBloc();
-  final _codeController = new TextEditingController();
 
   // Future<void> loginUser(String phone, BuildContext context) async {
   //   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -216,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
           SaveData save = new SaveData();
           save.saveSender(sender);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPage()));
+              context, MaterialPageRoute(builder: (context) => LoadingPage()));
         } else if (checkRole.compareTo("fail") == 0) {
           _validationBloc.setPhoneNumberControllerError(
               "This phone number is registered in a different role.");

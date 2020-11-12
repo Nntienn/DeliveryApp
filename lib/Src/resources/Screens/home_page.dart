@@ -2,7 +2,8 @@ import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'main_page.dart';
+import 'Loading.dart';
+
 
 
 
@@ -82,9 +83,11 @@ class _MyHomeState extends State<HomePage>{
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
+                        width: MediaQuery.of(context).size.width * 0.85,
                         margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                         child: Text(
                           homeAddress,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: Colors.black38, fontSize: 17),
                         ),
                       ),
