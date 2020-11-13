@@ -225,10 +225,10 @@ class _LoginPageState extends State<LoginPage> {
           _errAlert(context, "Account is locked active");
         } else if(checkRole.compareTo("not exist") == 0) {
           _errAlert(context, "Account doesn't exist");
-        }else {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RegisterPage()));
         }
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RegisterPage()));
       }
     }
   }

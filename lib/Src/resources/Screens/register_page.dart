@@ -1,10 +1,28 @@
 
+import 'package:delivery_app/Src/blocs/register_bloc.dart';
+import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'login_page.dart';
 import 'otp_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  RegisterBloc _registerBloc = new RegisterBloc();
+
+  TextEditingController _nameController = new TextEditingController();
+
+  TextEditingController _emailController = new TextEditingController();
+
+  TextEditingController _phoneNumController = new TextEditingController();
+
+  TextEditingController _homeAddressController = new TextEditingController();
+
+  TextEditingController _officeAddressController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +89,19 @@ class RegisterPage extends StatelessWidget {
                               .of(context)
                               .size
                               .width * 0.8,
-                          child: TextField(
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            decoration: InputDecoration(
-                              labelText: "FULL NAME",
-                              labelStyle: TextStyle(color: Colors.black),
-                              border: InputBorder.none,
+                          child: StreamBuilder (
+                            stream: _registerBloc.nameStream,
+                            builder: (context, snapshot) => TextField(
+                              controller: _nameController,
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                              decoration: InputDecoration(
+                                errorText: snapshot.hasError ? snapshot.error : null,
+                                labelText: "FULL NAME",
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: InputBorder.none,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                       ],
                     ),
@@ -106,14 +129,19 @@ class RegisterPage extends StatelessWidget {
                               .of(context)
                               .size
                               .width * 0.8,
-                          child: TextField(
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            decoration: InputDecoration(
-                              labelText: "EMAIL",
-                              labelStyle: TextStyle(color: Colors.black),
-                              border: InputBorder.none,
+                          child: StreamBuilder(
+                            stream: _registerBloc.emailStream,
+                            builder: (context, snapshot) => TextField(
+                              controller: _emailController,
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                              decoration: InputDecoration(
+                                errorText: snapshot.hasError ? snapshot.error : null,
+                                labelText: "EMAIL",
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: InputBorder.none,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                       ],
                     ),
@@ -141,16 +169,20 @@ class RegisterPage extends StatelessWidget {
                               .of(context)
                               .size
                               .width * 0.8,
-                          child: TextField(
-                            readOnly: true,
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            decoration: InputDecoration(
-                              prefixText: phoneNumberController.text,
-                              labelText: "PHONE",
-                              labelStyle: TextStyle(color: Colors.black),
-                              border: InputBorder.none,
+                          child: StreamBuilder(
+                            stream: _registerBloc.phoneNumStream,
+                            builder: (context, snapshot) => TextField(
+                              controller: _phoneNumController,
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                              decoration: InputDecoration(
+                                errorText: snapshot.hasError ? snapshot.error : null,
+                                hintText: phoneNumberController.text,
+                                labelText: "PHONE",
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: InputBorder.none,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                       ],
                     ),
@@ -180,15 +212,19 @@ class RegisterPage extends StatelessWidget {
                               .of(context)
                               .size
                               .width * 0.8,
-                          child: TextField(
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            decoration: InputDecoration(
-                              labelText: "HOME ADDRESS",
-
-                              labelStyle: TextStyle(color: Colors.black),
-                              border: InputBorder.none,
+                          child: StreamBuilder(
+                            stream: _registerBloc.homeAddressStream,
+                            builder: (context, snapshot) => TextField(
+                              controller: _homeAddressController,
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                              decoration: InputDecoration(
+                                labelText: "HOME ADDRESS",
+                                errorText: snapshot.hasError ? snapshot.error : null,
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: InputBorder.none,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                       ],
                     ),
@@ -217,6 +253,7 @@ class RegisterPage extends StatelessWidget {
                               .size
                               .width * 0.8,
                           child: TextField(
+                            controller: _officeAddressController,
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
                               labelText: "OFFICE ADDRESS",
@@ -252,8 +289,7 @@ class RegisterPage extends StatelessWidget {
               height: 60,
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => OtpPage())),
+                onPressed: _onClickedContinue,
                 color: kPrimaryColor,
                 textColor: Colors.white,
                 child: Text(
@@ -266,6 +302,22 @@ class RegisterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _onClickedContinue() {
+    String _phone;
+    String _email;
+    if (email.isEmpty || email == null) {
+      _phone = phoneNumberController.text;
+      _email = _emailController.text;
+    } else {
+      _phone = _phoneNumController.text;
+      _email = email;
+    }
+    if (_registerBloc.isValidRegister(_nameController.text, _email, _phone, _homeAddressController.text, _officeAddressController.text)) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => OtpPage()));
+    }
   }
 }
 
