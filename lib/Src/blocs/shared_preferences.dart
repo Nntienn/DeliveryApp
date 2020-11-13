@@ -1,5 +1,6 @@
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
+import 'package:delivery_app/Src/models/wallet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveData {
@@ -16,6 +17,16 @@ class SaveData {
     sp.setString('homeAddress', sender.homeAddress);
     sp.setString('workAddress', sender.workAddress );
     sp.setString('walletId', sender.walletId);
+  }
+
+  Future<void> saveWallet(double balance) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setDouble('balance', balance);
+  }
+
+  Future<double> getBalance() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.getDouble('balance');
   }
 
   Future<String> getWalletId() async {
@@ -51,5 +62,16 @@ class SaveData {
   Future<String> getEmail() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.getString('email');
+  }
+
+  Future<Sender> getSender() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String id = sp.getString('id');
+    String name = sp.getString('name');
+    String homeAddress = sp.getString('homeAddress');
+    String workAddress = sp.getString('workAddress');
+    String phoneNum = sp.getString('phoneNum');
+    String walletId = sp.getString('walletId');
+    return new Sender.n(id, name, homeAddress, workAddress, phoneNum, walletId);
   }
 }

@@ -1,9 +1,30 @@
+import 'dart:ffi';
+
+import 'dart:wasm';
+
 class Validation {
   static bool isValidName(String name) {
     if (name == null || name.length == 0) {
       return false;
     }
     return true;
+  }
+
+  static bool isValidAddress(String address) {
+    if (address == null || address.length == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  static bool isValidCOD(String cod) {
+    try {
+      if (cod is double) {
+        return true;
+      }
+    } catch(err) {
+      return false;
+    }
   }
 
   static int isValidEmail(String email) {

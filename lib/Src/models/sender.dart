@@ -12,6 +12,8 @@ class Sender {
   String walletId;
 
   Sender();
+  Sender.n(this.id, this.name, this.homeAddress, this.workAddress, this.phoneNum, this.walletId);
+  Sender.m(this.name, this.homeAddress, this.workAddress, this.phoneNum);
 
   factory Sender.fromJson(Map<String, dynamic> json) => _$SenderFromJson(json);
   Map<String, dynamic> toJson() => _$SenderToJson(this);

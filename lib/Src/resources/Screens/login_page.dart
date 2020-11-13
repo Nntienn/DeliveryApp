@@ -1,7 +1,9 @@
+import 'package:delivery_app/Src/blocs/home_bloc.dart';
 import 'package:delivery_app/Src/blocs/login_bloc.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/blocs/validation_bloc.dart';
 import 'package:delivery_app/Src/models/sender.dart';
+import 'package:delivery_app/Src/models/wallet.dart';
 import 'package:delivery_app/Src/resources/Screens/Loading.dart';
 import 'package:delivery_app/Src/resources/Screens/otp_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
@@ -210,16 +212,44 @@ class _LoginPageState extends State<LoginPage> {
           Sender sender = await _loginBloc.convertJsonToSender(senderResponse);
           SaveData save = new SaveData();
           save.saveSender(sender);
+          print(sender.walletId);
+          Response walletResponse = await _loginBloc.getWalletByWalletID(sender.walletId);
+          Wallet wallet = await _loginBloc.convertJsonToWallet(walletResponse);
+          save.saveWallet(wallet.amount);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoadingPage()));
         } else if (checkRole.compareTo("fail") == 0) {
           _validationBloc.setPhoneNumberControllerError(
               "This phone number is registered in a different role.");
-        } else {
+        } else if(checkRole.compareTo("deactive") == 0) {
+          _errAlert(context, "Account is locked active");
+        } else if(checkRole.compareTo("not exist") == 0) {
+          _errAlert(context, "Account doesn't exist");
+        }else {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => RegisterPage()));
         }
       }
     }
+  }
+
+  Future _errAlert(BuildContext context, String err) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Failed login'),
+          content: Text('$err'),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

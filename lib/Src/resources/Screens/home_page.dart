@@ -1,6 +1,8 @@
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
+import 'package:delivery_app/Src/blocs/home_bloc.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 import 'Loading.dart';
 
@@ -16,6 +18,9 @@ class HomePage extends StatefulWidget{
 
 }
 class _MyHomeState extends State<HomePage>{
+  HomeBloc _homeBloc = new HomeBloc();
+  String address;
+  TextEditingController addressController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,41 +84,32 @@ class _MyHomeState extends State<HomePage>{
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.85,
-                        margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                        child: Text(
-                          homeAddress,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.black38, fontSize: 17),
-                        ),
-                      ),
-                    ],
-                  ),
                   Container(
                       margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: TextField(
-                        cursorColor: Colors.black26,
-                        style: TextStyle(fontSize: 15),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          // enabledBorder: UnderlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.black26),
-                          // ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black26),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
-                          ),
-                          border: OutlineInputBorder(
-                            // width: 0.0 produces a thin "hairline" border
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.white24),
-                            //borderSide: const BorderSide(),
+                      child: StreamBuilder(
+                        stream: _homeBloc.addressStream,
+                        builder: (context, snapshot) => TextField(
+                          cursorColor: Colors.black26,
+                          style: TextStyle(fontSize: 15),
+                          controller: addressController,
+                          decoration: InputDecoration(
+                            hintText: snapshot.hasData ? snapshot.data : "Enter address",
+                            contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            // enabledBorder: UnderlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.black26),
+                            // ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black26),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(20.0)),
+                            ),
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(20.0)),
+                              borderSide: BorderSide(color: Colors.white24),
+                              //borderSide: const BorderSide(),
+                            ),
                           ),
                         ),
                       )),
@@ -127,19 +123,34 @@ class _MyHomeState extends State<HomePage>{
                       buttonLables: [
                         'Nhà',
                         'Cơ quan',
+                        'Nơi khác',
                       ],
                       buttonValues: [
                         1,
                         2,
+                        3,
                       ],
                       defaultSelected: 1,
                       radioButtonValue: (value) {
                         if (value == 1) {
-                          print('hahah');
+                          if (homeAddress == null || homeAddress.isEmpty) {
+                            _homeBloc.setAddress("Enter address");
+                            address = "1";
+                          } else {
+                            _homeBloc.setAddress(homeAddress);
+                            address = "0";
+                          }
                         } else if (value == 2) {
-                          print('h1h1h');
-                        } else {
-                          print('hahahaaaaaa');
+                          if (workAddress == null || workAddress.isEmpty) {
+                            _homeBloc.setAddress("Enter address");
+                            address = "2";
+                          } else{
+                            _homeBloc.setAddress(workAddress);
+                            address = "0";
+                          }
+                        } else if (value == 3) {
+                          _homeBloc.setAddress("Enter address");
+                          address = "3";
                         }
                       },
                       // cai nay de add action

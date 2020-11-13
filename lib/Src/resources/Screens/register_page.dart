@@ -75,7 +75,6 @@ class RegisterPage extends StatelessWidget {
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
                               labelText: "FULL NAME",
-
                               labelStyle: TextStyle(color: Colors.black),
                               border: InputBorder.none,
                             ),
@@ -166,6 +165,78 @@ class RegisterPage extends StatelessWidget {
                         child: Text(
                           'We will send verification code on above given number',
                           style: TextStyle(color: Colors.black26),)),
+                    Row(
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(15, 22, 15, 0),
+                            child: Icon(
+                              Icons.location_on,
+                              color: kPrimaryColor,
+                              size: 30,
+                            )),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.8,
+                          child: TextField(
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            decoration: InputDecoration(
+                              labelText: "HOME ADDRESS",
+
+                              labelStyle: TextStyle(color: Colors.black),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(15, 22, 15, 0),
+                            child: Icon(
+                              Icons.add_location,
+                              color: kPrimaryColor,
+                              size: 30,
+                            )),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.8,
+                          child: TextField(
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            decoration: InputDecoration(
+                              labelText: "OFFICE ADDRESS",
+
+                              labelStyle: TextStyle(color: Colors.black),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
               )

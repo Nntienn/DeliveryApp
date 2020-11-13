@@ -9,12 +9,17 @@
 
 
 
+import 'dart:convert';
+
+import 'package:delivery_app/Src/api_util/register.dart';
+import 'package:delivery_app/Src/configs/link.dart';
+import 'package:delivery_app/Src/models/account.dart';
+import 'package:delivery_app/Src/models/sender.dart';
 import 'package:http/http.dart';
 
 Future<void> main() async {
-
-
-  Client client = Client();
-  final responese = await client.get('https://androidt1.azurewebsites.net/api/Accounts/phoneNum/0854146162');
-  print("Body ne: " + responese.body);
+  Sender sender = new Sender.m("Nguuyen Thai Binh", "16 đường 106, Tăng Nhơn Phú A, quận 9, thành phố Hồ Chí Minh", "", "0854146162");
+  RegisterApi api = new RegisterApi();
+  Response response = await api.postSender(sender);
+  print(response.body);
 }

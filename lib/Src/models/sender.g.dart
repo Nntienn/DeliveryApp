@@ -11,12 +11,10 @@ Sender _$SenderFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$SenderToJson(Sender instance) => <String, dynamic>{
-  'id': instance.id,
   'name': instance.name,
   'homeAddress': instance.homeAddress,
   'workAddress': instance.workAddress,
   'phoneNum': instance.phoneNum,
-  'walletId': instance.walletId,
 };
 
 
