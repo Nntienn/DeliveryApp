@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 
-SaveData save = new SaveData();
-String name = "";
-String phoneNum = "";
-String homeAddress = "";
-String id = "";
-String workAddress = "";
-String walletId = "";
-double balance = 0;
 
-Future<void> getSender() async {
-  name = await save.getName();
-  phoneNum = await save.getPhoneNum();
-  homeAddress = await save.getHomeAddress();
-  workAddress = await save.getWorkAddress();
-  id = await save.getId();
-  walletId = await save.getWalletId();
-  balance = await save.getBalance();
+String nameLoading = "";
+String phoneNumLoading = "";
+String homeAddressLoading = "";
+String idLoading = "";
+String workAddressLoading = "";
+String walletIdLoading = "";
+double balanceLoading = 0;
+
+void getSender() async {
+  SaveData save = new SaveData();
+  nameLoading = await save.getName();
+  phoneNumLoading = await save.getPhoneNum();
+  homeAddressLoading = await save.getHomeAddress();
+  workAddressLoading = await save.getWorkAddress();
+  idLoading = await save.getId();
+  walletIdLoading = await save.getWalletId();
+  balanceLoading = await save.getBalance();
 }
 class LoadingPage extends StatefulWidget {
   @override
@@ -28,9 +29,10 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _MyAppState extends State<LoadingPage> {
+
   @override
   Widget build(BuildContext context) {
-    getSender();
+
     return new SplashScreen(
       routeName: "/",
       title: new Text(

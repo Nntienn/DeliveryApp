@@ -4,7 +4,7 @@ import 'package:delivery_app/Src/blocs/register_bloc.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
-import 'package:delivery_app/Src/resources/Screens/Loading.dart';
+import 'package:delivery_app/Src/resources/Screens/main_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
@@ -308,7 +308,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ],
         ),
       ),
-      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -340,6 +339,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (!checkRegisterAccount) {
           _errAlert(context, "The system is failed, registration failed");
         } else {
+          saveAccount(account);
           Sender sender = new Sender.m(_nameController.text,  _homeAddressController.text, _officeAddressController.text, _phone);
           bool checkRegisterSender = await registerSender(sender);
           if (!checkRegisterSender) {
@@ -348,7 +348,7 @@ class _RegisterPageState extends State<RegisterPage> {
             await saveSender(_phone);
             await saveBalance(_phone);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LoadingPage()));
+                context, MaterialPageRoute(builder: (context) => MainPage()));
           }
         }
       } else {
@@ -378,6 +378,11 @@ class _RegisterPageState extends State<RegisterPage> {
     } else {
       return false;
     }
+  }
+
+  Future<void> saveAccount(Account account) async {
+    SaveData save = new SaveData();
+    save.saveAccount(account);
   }
 
   //Lưu lại số dư trong tài khoản vào máy

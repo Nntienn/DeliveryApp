@@ -19,15 +19,12 @@ class HomePage extends StatefulWidget{
 }
 class _MyHomeState extends State<HomePage>{
   HomeBloc _homeBloc = new HomeBloc();
-  String address;
+  SaveData _save = new SaveData();
+  String _address;
   TextEditingController addressController = new TextEditingController();
-  SaveData save = new SaveData();
 
   @override
   Widget build(BuildContext context) {
-    // initState(
-    //     getSender();
-    // );
 
     return Container(
       child: SingleChildScrollView(
@@ -60,10 +57,13 @@ class _MyHomeState extends State<HomePage>{
                       children: [
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                          child: FutureBuilder(
+                            future: _save.getName(),
+                            builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+                              snapshot.hasData ? snapshot.data : "Loading",
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                         Container(
@@ -76,10 +76,13 @@ class _MyHomeState extends State<HomePage>{
                         ),
                         Container(
                           margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                          child: Text(
-                            phoneNum,
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                          child: FutureBuilder(
+                            future: _save.getPhoneNum(),
+                            builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+                              snapshot.hasData ? snapshot.data : "fail",
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ],
@@ -87,33 +90,31 @@ class _MyHomeState extends State<HomePage>{
                   ),
                   Container(
                       margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: StreamBuilder(
-                        stream: _homeBloc.addressStream,
-                        builder: (context, snapshot) => TextField(
-                          cursorColor: Colors.black26,
-                          style: TextStyle(fontSize: 15),
-                          controller: addressController,
-                          decoration: InputDecoration(
-                            hintText: snapshot.hasData ? snapshot.data : "Enter address",
-                            contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                            // enabledBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.black26),
-                            // ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black26),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(20.0)),
-                            ),
-                            border: OutlineInputBorder(
-                              // width: 0.0 produces a thin "hairline" border
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(20.0)),
-                              borderSide: BorderSide(color: Colors.white24),
-                              //borderSide: const BorderSide(),
-                            ),
+                      child: TextField(
+                        cursorColor: Colors.black26,
+                        style: TextStyle(fontSize: 15),
+                        controller: addressController,
+                        decoration: InputDecoration(
+                          hintText: "Enter other address",
+                          contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                          // enabledBorder: UnderlineInputBorder(
+                          //   borderSide: BorderSide(color: Colors.black26),
+                          // ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black26),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          border: OutlineInputBorder(
+                            // width: 0.0 produces a thin "hairline" border
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.white24),
+                            //borderSide: const BorderSide(),
                           ),
                         ),
-                      )),
+                      ),
+                  ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(5, 10, 0, 10),
                     child: CustomRadioButton(
@@ -133,26 +134,7 @@ class _MyHomeState extends State<HomePage>{
                       ],
                       defaultSelected: 1,
                       radioButtonValue: (value) {
-                        if (value == 1) {
-                          if (homeAddress == null || homeAddress.isEmpty) {
-                            _homeBloc.setAddress("Enter address");
-                            address = "1";
-                          } else {
-                            _homeBloc.setAddress(homeAddress);
-                            address = "0";
-                          }
-                        } else if (value == 2) {
-                          if (workAddress == null || workAddress.isEmpty) {
-                            _homeBloc.setAddress("Enter address");
-                            address = "2";
-                          } else{
-                            _homeBloc.setAddress(workAddress);
-                            address = "0";
-                          }
-                        } else if (value == 3) {
-                          _homeBloc.setAddress("Enter address");
-                          address = "3";
-                        }
+                        setAddressData(value);
                       },
                       // cai nay de add action
                       selectedColor: Theme.of(context).accentColor,
@@ -371,8 +353,8 @@ class _MyHomeState extends State<HomePage>{
                     height: 60,
                     width: MediaQuery.of(context).size.width,
                     child: FlatButton(
-                      onPressed: () async {
-                        print(await save.getBalance());
+                      onPressed: () {
+
                       },
                       // => Navigator.push(
                       //     context, MaterialPageRoute(builder: (context) => ())),
@@ -390,5 +372,16 @@ class _MyHomeState extends State<HomePage>{
         ),
       ),
     );
+  }
+
+  Future<void> setAddressData(int opt) async {
+    String _homeAddress = await _save.getHomeAddress();
+    String _officeAddress = await _save.getWorkAddress();
+    String _otherAddress = addressController.text;
+    switch (opt) {
+      case 1: _address = _homeAddress; break;
+      case 2: _address = _officeAddress; break;
+      case 3: _address = _otherAddress; break;
+    }
   }
 }

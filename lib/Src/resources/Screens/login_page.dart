@@ -219,7 +219,6 @@ class _LoginPageState extends State<LoginPage> {
           Sender sender = await _loginBloc.convertJsonToSender(senderResponse);
           SaveData save = new SaveData();
           save.saveSender(sender);
-          print(sender.walletId);
           Response walletResponse = await _loginBloc.getWalletByWalletID(sender.walletId);
           Wallet wallet = await _loginBloc.convertJsonToWallet(walletResponse);
           save.saveBalance(wallet.amount);
