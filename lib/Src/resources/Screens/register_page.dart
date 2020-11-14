@@ -135,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             builder: (context, snapshot) => TextFormField(
                               controller: _emailController,
                               style: TextStyle(fontSize: 18, color: Colors.black),
-                              initialValue: _emailController.text,
+                              // initialValue: _emailController.text,
                               decoration: InputDecoration(
                                 errorText: snapshot.hasError ? snapshot.error : null,
                                 labelText: "EMAIL",
@@ -176,8 +176,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             builder: (context, snapshot) => TextFormField(
                               controller: _phoneNumController,
                               style: TextStyle(fontSize: 18, color: Colors.black),
-                              initialValue: phoneNumberController.text,
                               decoration: InputDecoration(
+                                hintText: phoneNumberController.text,
                                 errorText: snapshot.hasError ? snapshot.error : null,
                                 labelText: "PHONE",
                                 labelStyle: TextStyle(color: Colors.black),
