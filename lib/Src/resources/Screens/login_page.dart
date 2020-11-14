@@ -1,4 +1,4 @@
-import 'package:delivery_app/Src/blocs/home_bloc.dart';
+
 import 'package:delivery_app/Src/blocs/login_bloc.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/blocs/validation_bloc.dart';
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _onLoginClick() async {
     if (_validationBloc.isValidLogIn(phoneNumberController.text)) {
       Response response =
-          await _loginBloc.getAccountJsonByPhone(phoneNumberController.text);
+      await _loginBloc.getAccountJsonByPhone(phoneNumberController.text);
       if (response.statusCode == 200) {
         String checkRole = await _loginBloc.getAccountRole(response);
         if (checkRole.compareTo("success") == 0) {
@@ -252,4 +252,5 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
 }

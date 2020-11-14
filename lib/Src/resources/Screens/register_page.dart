@@ -27,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
           height: MediaQuery
               .of(context)
@@ -131,9 +132,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               .width * 0.8,
                           child: StreamBuilder(
                             stream: _registerBloc.emailStream,
-                            builder: (context, snapshot) => TextField(
+                            builder: (context, snapshot) => TextFormField(
                               controller: _emailController,
                               style: TextStyle(fontSize: 18, color: Colors.black),
+                              initialValue: _emailController.text,
                               decoration: InputDecoration(
                                 errorText: snapshot.hasError ? snapshot.error : null,
                                 labelText: "EMAIL",
@@ -171,12 +173,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               .width * 0.8,
                           child: StreamBuilder(
                             stream: _registerBloc.phoneNumStream,
-                            builder: (context, snapshot) => TextField(
+                            builder: (context, snapshot) => TextFormField(
                               controller: _phoneNumController,
                               style: TextStyle(fontSize: 18, color: Colors.black),
+                              initialValue: phoneNumberController.text,
                               decoration: InputDecoration(
                                 errorText: snapshot.hasError ? snapshot.error : null,
-                                hintText: phoneNumberController.text,
                                 labelText: "PHONE",
                                 labelStyle: TextStyle(color: Colors.black),
                                 border: InputBorder.none,
