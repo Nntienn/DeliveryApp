@@ -15,18 +15,6 @@ class RegisterBloc {
   Stream get homeAddressStream => _homeAddressController.stream;
   Stream get officeAddressStream => _officeAddressController.stream;
 
-  bool isValidEmail(String email) {
-    int check = Validation.isValidEmail(email);
-    if (check == 0) {
-      _emailController.sink.addError("Please enter email");
-      return false;
-    } else if (check == 1) {
-      _emailController.sink.addError("Please enter valid email");
-      return false;
-    }
-    return true;
-  }
-
   bool isValidRegister(String name, String email, String phone, String homeAddress, String officeAddress) {
     if(!Validation.isValidName(name)) {
       _nameController.sink.addError("Enter full name");
@@ -34,7 +22,8 @@ class RegisterBloc {
     }
     _nameController.sink.add("ok");
 
-    if(!isValidEmail(email)) {
+    if(!Validation.isValidEmail(email)) {
+      _emailController.sink..addError("Please enter valid email");
       return false;
     }
     _emailController.sink.add("ok");

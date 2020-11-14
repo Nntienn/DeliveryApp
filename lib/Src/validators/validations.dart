@@ -1,6 +1,5 @@
-import 'dart:ffi';
 
-import 'dart:wasm';
+import 'package:email_validator/email_validator.dart';
 
 class Validation {
   static bool isValidName(String name) {
@@ -27,15 +26,11 @@ class Validation {
     }
   }
 
-  static int isValidEmail(String email) {
-    String pattern = '(?=\A.{6,255}\z)(#{USER})@(#{DOMAIN})';
-    RegExp regExp = new RegExp(pattern);
-    if (email.length == 0) {
-      return 0;
-    } else if (!regExp.hasMatch(email)) {
-      return 1;
+  static bool isValidEmail(String email) {
+    if (EmailValidator.validate(email)) {
+      return true;
     }
-    return null;
+    return false;
   }
 
   static int isValidPhone(String phone) {

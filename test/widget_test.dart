@@ -16,10 +16,19 @@ import 'package:delivery_app/Src/configs/link.dart';
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
 import 'package:http/http.dart';
+import 'package:delivery_app/Src/api_util/register.dart';
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 
 Future<void> main() async {
-  Sender sender = new Sender.m("Nguuyen Thai Binh", "16 đường 106, Tăng Nhơn Phú A, quận 9, thành phố Hồ Chí Minh", "", "0854146162");
-  RegisterApi api = new RegisterApi();
-  Response response = await api.postSender(sender);
-  print(response.body);
+
+    RegisterApi api = new RegisterApi();
+    Response response = await api.getSenderByPhoneNum("01885582656");
+    if (response.statusCode == 200) {
+        Sender sender = await api.convertJsonToSender(response);
+        double balance = await api.getBalance(sender.walletId);
+        SaveData save = new SaveData();
+        save.saveBalance(balance);
+        print(await save.getBalance());
+  }
+
 }

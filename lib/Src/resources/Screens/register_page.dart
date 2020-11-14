@@ -1,10 +1,15 @@
 
+import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/blocs/register_bloc.dart';
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
+import 'package:delivery_app/Src/models/account.dart';
+import 'package:delivery_app/Src/models/sender.dart';
+import 'package:delivery_app/Src/resources/Screens/Loading.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
+import 'package:http/http.dart';
 import 'login_page.dart';
-import 'otp_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -303,23 +308,131 @@ class _RegisterPageState extends State<RegisterPage> {
           ],
         ),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 
-  Future<void> _onClickedContinue() {
-    String _phone;
+  Future<void> _onClickedContinue() async {
+    String _phone = phoneNumberController.text;
     String _email;
-    if (email.isEmpty || email == null) {
-      _phone = phoneNumberController.text;
-      _email = _emailController.text;
-    } else {
+    String _workAddress = _officeAddressController.text;
+    String _homeAddress = _homeAddressController.text;
+    if (_phone.isEmpty || _phone == null) {
       _phone = _phoneNumController.text;
       _email = email;
+    } else {
+      _phone = phoneNumberController.text;
+      _email = _emailController.text;
     }
-    if (_registerBloc.isValidRegister(_nameController.text, _email, _phone, _homeAddressController.text, _officeAddressController.text)) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => OtpPage()));
+    if (_workAddress == null) {
+      _workAddress = "";
     }
+    if (_homeAddress == null) {
+      _homeAddress = "";
+    }
+
+
+    if (_registerBloc.isValidRegister(_nameController.text, _email, _phone, _homeAddress, _workAddress)) {
+      bool isExistAccount = await isExitAccount(_email, _phone);
+      if (!isExistAccount) {
+        Account account = new Account.n(_phone, _email, "sender", "active");
+        bool checkRegisterAccount = await registerAccount(account);
+        if (!checkRegisterAccount) {
+          _errAlert(context, "The system is failed, registration failed");
+        } else {
+          Sender sender = new Sender.m(_nameController.text,  _homeAddressController.text, _officeAddressController.text, _phone);
+          bool checkRegisterSender = await registerSender(sender);
+          if (!checkRegisterSender) {
+            _errAlert(context, "The system is failed, registration failed");
+          } else {
+            await saveSender(_phone);
+            await saveBalance(_phone);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoadingPage()));
+          }
+        }
+      } else {
+        _errAlert(context, "Phone or email is existed");
+      }
+    }
+  }
+
+
+  //Đăng ký tài khoản
+  Future<bool> registerAccount(Account account) async {
+    RegisterApi api = new RegisterApi();
+    Response response = await api.postAccount(account);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //Điền thông tin cho sender
+  Future<bool> registerSender(Sender sender) async {
+    RegisterApi api = new RegisterApi();
+    Response response = await api.postSender(sender);
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //Lưu lại số dư trong tài khoản vào máy
+  Future<void> saveBalance(String phone) async {
+    RegisterApi api = new RegisterApi();
+    Response response = await api.getSenderByPhoneNum(phone);
+    if (response.statusCode == 200) {
+      Sender sender = await api.convertJsonToSender(response);
+      double balance = await api.getBalance(sender.walletId);
+      SaveData save = new SaveData();
+      save.saveBalance(balance);
+    }
+  }
+
+  //Save thông tin Sender vào local
+  Future<void> saveSender(String phone) async {
+    RegisterApi api = new RegisterApi();
+    Response response = await api.getSenderByPhoneNum(phone);
+    if (response.statusCode == 200) {
+      Sender sender = await api.convertJsonToSender(response);
+      SaveData save = new SaveData();
+      save.saveSender(sender);
+    }
+  }
+
+  //Kiểm tra email hoặc số điện thoại tồn tại chưa
+  Future<bool> isExitAccount(String email, String phone) async {
+    RegisterApi api = new RegisterApi();
+    if (await api.isExistAccountByEmail(email)) {
+      return true;
+    } else if (await api.isExistAccountByPhone(phone)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future _errAlert(BuildContext context, String err) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Register fail'),
+          content: Text('$err'),
+          actions: [
+            FlatButton(
+              child: Text('Exit'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

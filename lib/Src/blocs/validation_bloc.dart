@@ -26,17 +26,6 @@ class ValidationBloc {
     return true;
   }
 
-  bool isValidEmail(String email) {
-    int check = Validation.isValidEmail(email);
-    if (check == 0) {
-      _emailController.sink.addError("Please enter email");
-      return false;
-    } else if (check == 1) {
-      _emailController.sink.addError("Please enter valid email");
-      return false;
-    }
-    return true;
-  }
 
   bool isValidName(String name) {
     if (!Validation.isValidName(name)) {
@@ -52,7 +41,8 @@ class ValidationBloc {
     }
     _nameController.sink.add("Ok");
 
-    if (!isValidEmail(email)) {
+    if (!Validation.isValidEmail(email)) {
+      _emailController.sink.addError("Please enter valid email");
       return false;
     }
     _emailController.sink.add("Ok");

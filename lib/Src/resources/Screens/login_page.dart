@@ -5,8 +5,11 @@ import 'package:delivery_app/Src/blocs/validation_bloc.dart';
 import 'package:delivery_app/Src/models/sender.dart';
 import 'package:delivery_app/Src/models/wallet.dart';
 import 'package:delivery_app/Src/resources/Screens/Loading.dart';
+import 'package:delivery_app/Src/resources/Screens/main_page.dart';
 import 'package:delivery_app/Src/resources/Screens/otp_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -22,74 +25,77 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final ValidationBloc _validationBloc = new ValidationBloc();
   final LoginBloc _loginBloc = new LoginBloc();
+  TextEditingController _codeController = new TextEditingController();
 
-  // Future<void> loginUser(String phone, BuildContext context) async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //
-  //   _auth.verifyPhoneNumber(
-  //       phoneNumber: phoneNumberController.text,
-  //       timeout: Duration(seconds: 120),
-  //       verificationCompleted: (AuthCredential credential) async {
-  //         Navigator.of(context).pop();
-  //         UserCredential result = await _auth.signInWithCredential(credential);
-  //
-  //         auth.User user = result.user;
-  //
-  //         if (user != null) {
-  //           Navigator.push(
-  //               context, MaterialPageRoute(builder: (context) => HomePage()));
-  //         } else {
-  //           print('Error');
-  //         }
-  //       },
-  //       verificationFailed: (FirebaseAuthException exception) {
-  //         print('$exception');
-  //       },
-  //       codeSent: (String verificationId, [int forceResendingToken]) {
-  //         showDialog(
-  //             context: context,
-  //             barrierDismissible: false,
-  //             builder: (context) {
-  //               return AlertDialog(
-  //                 title: Text('Give the code'),
-  //                 content: Column(
-  //                   mainAxisSize: MainAxisSize.min,
-  //                   children: <Widget>[
-  //                     TextField(
-  //                       controller: _codeController,
-  //                     )
-  //                   ],
-  //                 ),
-  //                 actions: <Widget>[
-  //                   FlatButton(
-  //                     child: Text('Confirm'),
-  //                     textColor: Colors.white,
-  //                     color: Colors.blue,
-  //                     onPressed: () async {
-  //                       final code = _codeController.text.trim();
-  //                       AuthCredential credential =
-  //                           PhoneAuthProvider.credential(
-  //                               verificationId: verificationId, smsCode: code);
-  //
-  //                       UserCredential result =
-  //                           await _auth.signInWithCredential(credential);
-  //                       auth.User user = result.user;
-  //                       if (user != null) {
-  //                         Navigator.push(
-  //                             context,
-  //                             MaterialPageRoute(
-  //                                 builder: (context) => HomePage()));
-  //                       } else {
-  //                         print('Error');
-  //                       }
-  //                     },
-  //                   )
-  //                 ],
-  //               );
-  //             });
-  //       },
-  //       codeAutoRetrievalTimeout: null);
-  // }
+
+  Future<void> loginUser(String phone, BuildContext context) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumberController.text,
+        timeout: Duration(seconds: 120),
+        verificationCompleted: (AuthCredential credential) async {
+          Navigator.of(context).pop();
+          UserCredential result = await _auth.signInWithCredential(credential);
+
+          auth.User user = result.user;
+
+          if (user != null) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MainPage()));
+          } else {
+            print('Error');
+          }
+        },
+        verificationFailed: (FirebaseAuthException exception) {
+          print('$exception');
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Give the code'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _codeController,
+                      )
+                    ],
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Confirm'),
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      onPressed: () async {
+                        final code = _codeController.text.trim();
+                        AuthCredential credential =
+                            PhoneAuthProvider.credential(
+                                verificationId: verificationId, smsCode: code);
+
+                        UserCredential result =
+                            await _auth.signInWithCredential(credential);
+                        auth.User user = result.user;
+                        if (user != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainPage()));
+                        } else {
+                          print('Error');
+                        }
+                      },
+                    )
+                  ],
+                );
+              });
+        },
+        codeAutoRetrievalTimeout: null);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +130,8 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(6)))),
                     ),
-                  )),
+                  )
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: SizedBox(
@@ -215,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
           print(sender.walletId);
           Response walletResponse = await _loginBloc.getWalletByWalletID(sender.walletId);
           Wallet wallet = await _loginBloc.convertJsonToWallet(walletResponse);
-          save.saveWallet(wallet.amount);
+          save.saveBalance(wallet.amount);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoadingPage()));
         } else if (checkRole.compareTo("fail") == 0) {

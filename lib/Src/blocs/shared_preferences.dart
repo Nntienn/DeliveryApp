@@ -11,15 +11,16 @@ class SaveData {
   }
 
   Future<void> saveSender(Sender sender) async {
+    print("vao roi ne");
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('id', sender.id);
     sp.setString('name', sender.name);
     sp.setString('homeAddress', sender.homeAddress);
-    sp.setString('workAddress', sender.workAddress );
+    sp.setString('workAddress', sender.workAddress);
     sp.setString('walletId', sender.walletId);
   }
 
-  Future<void> saveWallet(double balance) async {
+  Future<void> saveBalance(double balance) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setDouble('balance', balance);
   }

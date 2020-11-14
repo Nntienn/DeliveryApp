@@ -2,7 +2,7 @@ import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart
 import 'package:delivery_app/Src/blocs/home_bloc.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 
 import 'Loading.dart';
 
@@ -21,6 +21,7 @@ class _MyHomeState extends State<HomePage>{
   HomeBloc _homeBloc = new HomeBloc();
   String address;
   TextEditingController addressController = new TextEditingController();
+  SaveData save = new SaveData();
 
   @override
   Widget build(BuildContext context) {
@@ -370,12 +371,8 @@ class _MyHomeState extends State<HomePage>{
                     height: 60,
                     width: MediaQuery.of(context).size.width,
                     child: FlatButton(
-                      onPressed: () {
-                        if(name.length != 0) {
-                          print(name);
-                        }else{
-                          print('null');
-                        }
+                      onPressed: () async {
+                        print(await save.getBalance());
                       },
                       // => Navigator.push(
                       //     context, MaterialPageRoute(builder: (context) => ())),

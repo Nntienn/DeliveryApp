@@ -11,6 +11,7 @@ String homeAddress = "";
 String id = "";
 String workAddress = "";
 String walletId = "";
+double balance = 0;
 
 Future<void> getSender() async {
   name = await save.getName();
@@ -19,6 +20,7 @@ Future<void> getSender() async {
   workAddress = await save.getWorkAddress();
   id = await save.getId();
   walletId = await save.getWalletId();
+  balance = await save.getBalance();
 }
 class LoadingPage extends StatefulWidget {
   @override
