@@ -1,6 +1,8 @@
 
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/models/Product.dart';
+import 'package:delivery_app/Src/resources/Screens/addfund_page.dart';
+
 import 'package:delivery_app/Src/resources/Widgets/wallet_history_card.dart';
 import 'package:flutter/material.dart';
 
@@ -66,12 +68,20 @@ class WalletPage extends StatelessWidget {
               ),
               Spacer(),
               Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Icon(
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddfundPage()),
+                      );
+                    },
+                    child: Icon(
                 Icons.add_circle_outline,
                 size: 50,
                 color: Colors.greenAccent,
-              ))
+              ),
+                  ))
             ],
           ),
         ),
@@ -101,12 +111,12 @@ class WalletPage extends StatelessWidget {
                 itemBuilder: (context, index) => WalletCard(
                       product: products[index],
                       // press: () => Navigator.push(
-                  //                       //     context,
-                  //                       //     MaterialPageRoute(
-                  //                       //       builder: (context) => DetailsScreen(
-                  //                       //         product: products[index],
-                  //                       //       ),
-                  //                       //     )),
+                      //                       context,
+                      //                       MaterialPageRoute(
+                      //                         builder: (context) => WalletDetailPage(
+                      //                           product: products[index],
+                      //                         ),
+                      //                       )),
                     )),
           ),
         ),

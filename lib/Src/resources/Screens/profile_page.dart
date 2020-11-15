@@ -47,7 +47,7 @@ class ProfileState extends State<ProfilePage>{
         height: 150.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/thuan.jpg'),
+            image: AssetImage('assets/profile.png'),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),

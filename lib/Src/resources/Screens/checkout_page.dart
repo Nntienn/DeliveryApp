@@ -1,4 +1,5 @@
 
+import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutPage extends StatefulWidget{
@@ -16,10 +17,17 @@ class CheckoutState extends State<CheckoutPage>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
     return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: kPrimaryColor,
+        elevation: 0.0,
+        title: Text(
+          "Delivery App",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: Center(
-        child: Text("$MyDistance"),
+
       ),
     );
   }
