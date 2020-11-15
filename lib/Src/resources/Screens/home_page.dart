@@ -1,6 +1,7 @@
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
 import 'package:delivery_app/Src/blocs/home_bloc.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
+import 'package:delivery_app/Src/models/billing.dart';
 import 'package:delivery_app/Src/models/place_item_res.dart';
 import 'package:delivery_app/Src/models/trip_info_res.dart';
 import 'package:delivery_app/Src/repository/place_service.dart';
@@ -14,7 +15,8 @@ import 'checkout_page.dart';
 
 
 
-
+TextEditingController receiverNameController = TextEditingController();
+TextEditingController receiverPhoneController = TextEditingController();
 class HomePage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -26,6 +28,10 @@ class HomePage extends StatefulWidget{
 class _MyHomeState extends State<HomePage>{
   var _tripDistance = 0;
   double MyDistance = 0;
+  String sAddress;
+  String rAddress;
+  Billing bill;
+  TripInfoRes trip;
   final Map<String, Marker> _markers = <String, Marker>{};
   HomeBloc _homeBloc = new HomeBloc();
   SaveData _save = new SaveData();
@@ -192,6 +198,7 @@ class _MyHomeState extends State<HomePage>{
                       margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                       child: TextField(
                         cursorColor: Colors.black26,
+                        controller: receiverNameController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
                           // enabledBorder: UnderlineInputBorder(
@@ -275,6 +282,7 @@ class _MyHomeState extends State<HomePage>{
                         textAlign: TextAlign.center,
                         cursorColor: Colors.black26,
                         cursorRadius: Radius.circular(5.0),
+                        controller: receiverPhoneController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
                           // enabledBorder: UnderlineInputBorder(
@@ -366,12 +374,14 @@ class _MyHomeState extends State<HomePage>{
                     child: FlatButton(
                       onPressed: () {
                         print("$MyDistance");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CheckoutPage(MyDistance : MyDistance),
-                          ),
-                        );
+                        if(MyDistance != 0){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CheckoutPage(bill : bill),
+                            ),
+                          );
+                        }
                       },
                       // => Navigator.push(
                       //     context, MaterialPageRoute(builder: (context) => ())),
@@ -405,10 +415,34 @@ class _MyHomeState extends State<HomePage>{
     _markers[mkId] = Marker(markerId: MarkerId(mkId),position: LatLng(place.lat, place.lng)
     );
   }
-  void onPlaceSelected(PlaceItemRes place, bool fromAddress) {
+  void onPlaceSelected (PlaceItemRes place, bool fromAddress) {
     var mkId = fromAddress ? "from_address" : "to_address";
     _addMarker(mkId, place);
-    _checkDrawPolyline();
+    if (_markers.length > 1) {
+      var from = _markers["from_address"].position;
+      var to = _markers["to_address"].position;
+      PlaceService.getStep(
+          from.latitude, from.longitude, to.latitude, to.longitude)
+          .then((vl) {
+        TripInfoRes infoRes = vl;
+        _tripDistance = infoRes.distance;
+        print("$_tripDistance" + " meter");
+        print("$MyDistance" + " km aha");
+        setState(() {
+          rAddress = place.address;
+          trip = infoRes;
+          MyDistance = _tripDistance/1000 as double ;
+          bill = new Billing(sAddress, rAddress, MyDistance);
+          print(bill.sAddress+ " " +bill.rAddress+ bill.distance.toString());
+        });
+        print("$MyDistance" + " km");
+//        print(paths);
+      });
+    }else {
+      setState(()  {
+        sAddress = place.address;
+      });
+    }
   }
 
   void _checkDrawPolyline() {
@@ -423,6 +457,7 @@ class _MyHomeState extends State<HomePage>{
         print("$_tripDistance" + " meter");
         print("$MyDistance" + " km aha");
         setState(() {
+          trip = infoRes;
           MyDistance = _tripDistance/1000 as double ;
         });
         print("$MyDistance" + " km");

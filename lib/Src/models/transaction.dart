@@ -11,6 +11,8 @@ class Transaction {
 
   Transaction();
 
+
+
   factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 }

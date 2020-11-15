@@ -14,20 +14,29 @@ class HistoryPage extends StatelessWidget {
   SaveData save = new SaveData();
   HistoryApi api = new HistoryApi();
 
-  Future<List<Transaction>> getListTransaction() async {
+  Future<List<History_Model>> getListTransaction() async {
     String senderId = await save.getId();
     Response response = await api.getTransactionBySenderID(senderId);
     List<Transaction> list = await api.convertJsonToListTransaction(response);
-    List<Transaction> listTransactionTypeSending = await api.getListTransactionTypeSending(list);
+    List<Transaction> listTransactionTypeSending =
+        await api.getListTransactionTypeSending(list);
     list.clear();
     List<History_Model> listHistoryModel = List();
     listTransactionTypeSending.forEach((element) async {
-      Response response = await api.getTransactionDetailByID(element.transactionDetailsId.toString());
-      TransactionDetail transactionDetail = await api.convertJsonToTransactionDetail(response);
-      listHistoryModel.add(new History_Model(element.type, transactionDetail.senderAddress, transactionDetail.receiverAddress, transactionDetail.completedTime, transactionDetail.status, transactionDetail.amount));
+      Response response = await api
+          .getTransactionDetailByID(element.transactionDetailsId.toString());
+      TransactionDetail transactionDetail =
+          await api.convertJsonToTransactionDetail(response);
+      listHistoryModel.add(new History_Model(
+          element.type,
+          transactionDetail.senderAddress,
+          transactionDetail.receiverAddress,
+          transactionDetail.completedTime,
+          transactionDetail.status,
+          transactionDetail.amount));
     });
     listHistoryModel.clear();
-    return listTransactionTypeSending;
+    return listHistoryModel;
   }
 
   @override
@@ -62,6 +71,8 @@ class HistoryPage extends StatelessWidget {
                 ]),
             // padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
             child: FutureBuilder<List<History_Model>>(
+              future: getListTransaction(),
+              initialData: [],
               builder: (BuildContext context,
                       AsyncSnapshot<List<History_Model>> snapshot) =>
                   GridView.builder(
@@ -73,14 +84,14 @@ class HistoryPage extends StatelessWidget {
                   childAspectRatio: 4,
                 ),
                 itemBuilder: (context, index) => ItemCard(
-                  product: products[index],
-                  press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookingDetailPage(
-                          product: products[index],
-                        ),
-                      )),
+                  history: snapshot.data[index],
+                  // press: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => BookingDetailPage(
+                  //         history: snapshot.data[index],
+                  //       ),
+                  //     )),
                 ),
               ),
             ),
