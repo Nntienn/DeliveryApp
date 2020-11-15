@@ -52,6 +52,11 @@ class LoginBloc{
     return sender;
   }
 
+  Future<Account> convertJsonToAccount(http.Response response) async {
+    Account account = Account.fromJson(jsonDecode(response.body));
+    return account;
+  }
+
   Future<http.Response> getSenderJsonByPhone(String phone) async {
     return http.get(GET_SENDER_BY_PHONE + phone);
   }
