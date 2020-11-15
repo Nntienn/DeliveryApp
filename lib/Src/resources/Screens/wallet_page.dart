@@ -1,28 +1,11 @@
-import 'package:delivery_app/Src/api_util/history.dart';
-import 'package:delivery_app/Src/blocs/shared_preferences.dart';
+
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/models/Product.dart';
 import 'package:delivery_app/Src/resources/Widgets/wallet_history_card.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery_app/Src/models/transaction.dart';
-import 'package:http/http.dart';
+
 
 class WalletPage extends StatelessWidget {
-
-  SaveData save = new SaveData();
-  HistoryApi api = new HistoryApi();
-  List<Transaction> _list = List();
-
-  Future<void> setListTransaction() async {
-    _list = await getListTransaction();
-  }
-
-  Future<List<Transaction>> getListTransaction() async {
-    String senderId = await save. getId();
-    Response response = await api.getTransactionByID(senderId);
-    List<Transaction> list  = await api.convertJsonToListTransaction(response);
-    return list;
-  }
 
   @override
   Widget build(BuildContext context) {

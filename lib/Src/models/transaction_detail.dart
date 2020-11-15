@@ -11,6 +11,7 @@ class TransactionDetail {
   String receiverName;
   String receiverPhoneNum;
   String receiverAddress;
+  String senderAddress;
   String status;
   String description;
 

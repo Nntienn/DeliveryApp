@@ -1,159 +1,35 @@
-
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/models/Product.dart';
 import 'package:delivery_app/Src/resources/Screens/booking_detail.dart';
 import 'package:delivery_app/Src/resources/Widgets/delivery_history_card.dart';
+import 'package:delivery_app/Src/models/transaction.dart';
+import 'package:delivery_app/Src/api_util/history.dart';
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:delivery_app/Src/models/transaction_detail.dart';
+import 'package:delivery_app/Src/models/history_model.dart';
+import 'package:http/http.dart';
 
 class HistoryPage extends StatelessWidget {
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           decoration: BoxDecoration(color: Colors.white, boxShadow: [
-  //             BoxShadow(
-  //               color: Color(0x88999999),
-  //               offset: Offset(0, 5),
-  //               blurRadius: 5.0,
-  //             ),
-  //           ]),
-  //           margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-  //           child: Column(
-  //             children: [
-  //               Container(
-  //                   margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-  //                   child: Text(
-  //                     'Người gửi',
-  //                     style: TextStyle(
-  //                         color: Colors.black38,
-  //                         fontSize: 20,
-  //                         fontWeight: FontWeight.bold),
-  //                   )),
-  //               Container(
-  //                 margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     Container(
-  //                       margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-  //                       child: Text(
-  //                         'Nguyen Thai Binh',
-  //                         style: TextStyle(
-  //                             fontSize: 17, fontWeight: FontWeight.bold),
-  //                       ),
-  //                     ),
-  //                     Container(
-  //                       margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-  //                       child: Text(
-  //                         '|',
-  //                         style: TextStyle(
-  //                             fontSize: 17, fontWeight: FontWeight.bold),
-  //                       ),
-  //                     ),
-  //                     Container(
-  //                       margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //                       child: Text(
-  //                         '+84854146162',
-  //                         style: TextStyle(
-  //                             fontSize: 17, fontWeight: FontWeight.bold),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               Container(
-  //                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     SizedBox(
-  //                       width: MediaQuery.of(context).size.width * 0.85,
-  //                       child: Text(
-  //                         '9A2 Đường Man Thiện, Hiệp Phú, Quận 9,Thành Phố Hồ Chí Minh',
-  //                         overflow: TextOverflow.ellipsis,
-  //                       ),
-  //                     )
-  //                   ],
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //         Container(
-  //           // decoration: BoxDecoration(color: Colors.white,
-  //           //     // borderRadius: BorderRadius.all(Radius.circular(10)),
-  //           //     boxShadow: [
-  //           //       BoxShadow(
-  //           //         color: Color(0x88999999),
-  //           //         offset: Offset(0, 5),
-  //           //         blurRadius: 5.0,
-  //           //       ),
-  //           //     ]),
-  //           // margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-  //           child: Column(
-  //             children: [
-  //               Expanded(
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-  //                   child: GridView.builder(
-  //                       itemCount: products.length,
-  //                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //                         crossAxisCount: 1,
-  //                         mainAxisSpacing: kDefaultPaddin,
-  //                         crossAxisSpacing: kDefaultPaddin,
-  //                         childAspectRatio: 0.75,
-  //                       ),
-  //                       itemBuilder: (context, index) => ItemCard(
-  //                         product: products[index],
-  //                         // press: () => Navigator.push(
-  //                         //     context,
-  //                         //     MaterialPageRoute(
-  //                         //       builder: (context) => DetailsScreen(
-  //                         //         product: products[index],
-  //                         //       ),
-  //                         //     )),
-  //                       )),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         Container(
-  //           decoration: BoxDecoration(color: Colors.white, boxShadow: [
-  //             BoxShadow(
-  //               color: Color(0x88999999),
-  //               offset: Offset(0, 5),
-  //               blurRadius: 5.0,
-  //             ),
-  //           ]),
-  //           margin: const EdgeInsets.fromLTRB(5, 10, 5, 0),
-  //           height: 60,
-  //           child: Column(
-  //             children: [
-  //               Container(
-  //                 color: kPrimaryColor,
-  //                 height: 60,
-  //                 width: MediaQuery.of(context).size.width,
-  //                 child: FlatButton(
-  //                   onPressed: () {},
-  //                   // => Navigator.push(
-  //                   //     context, MaterialPageRoute(builder: (context) => ())),
-  //                   color: kPrimaryColor,
-  //                   child: Text(
-  //                     'Continue',
-  //                     style: TextStyle(fontSize: 20, color: Colors.white),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  SaveData save = new SaveData();
+  HistoryApi api = new HistoryApi();
+
+  Future<List<Transaction>> getListTransaction() async {
+    String senderId = await save.getId();
+    Response response = await api.getTransactionBySenderID(senderId);
+    List<Transaction> list = await api.convertJsonToListTransaction(response);
+    List<Transaction> listTransactionTypeSending = await api.getListTransactionTypeSending(list);
+    list.clear();
+    List<History_Model> listHistoryModel = List();
+    listTransactionTypeSending.forEach((element) async {
+      Response response = await api.getTransactionDetailByID(element.transactionDetailsId.toString());
+      TransactionDetail transactionDetail = await api.convertJsonToTransactionDetail(response);
+      listHistoryModel.add(new History_Model(element.type, transactionDetail.senderAddress, transactionDetail.receiverAddress, transactionDetail.completedTime, transactionDetail.status, transactionDetail.amount));
+    });
+    listHistoryModel.clear();
+    return listTransactionTypeSending;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -170,7 +46,6 @@ class HistoryPage extends StatelessWidget {
                 .copyWith(fontWeight: FontWeight.bold),
           ),
         ),
-
         Expanded(
           child: Container(
             padding: const EdgeInsets.fromLTRB(10, 20, 10, 5),
@@ -186,8 +61,11 @@ class HistoryPage extends StatelessWidget {
                   ),
                 ]),
             // padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-            child: GridView.builder(
-                itemCount: products.length,
+            child: FutureBuilder<List<History_Model>>(
+              builder: (BuildContext context,
+                      AsyncSnapshot<List<History_Model>> snapshot) =>
+                  GridView.builder(
+                itemCount: (snapshot.data != null) ? snapshot.data.length : 0,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
                   // mainAxisSpacing: kDefaultPaddin,
@@ -203,7 +81,9 @@ class HistoryPage extends StatelessWidget {
                           product: products[index],
                         ),
                       )),
-                )),
+                ),
+              ),
+            ),
           ),
         ),
       ],

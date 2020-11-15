@@ -15,8 +15,18 @@ class ProfilePage extends StatefulWidget{
 
 class ProfileState extends State<ProfilePage>{
   SaveData save = new SaveData();
-  final String _fullName = "Thuan Hoang";
-  final String _status = "Software Developer";
+  String _phone = "";
+  String _address = "";
+  String _wallet = "";
+  String _officeAddress = "";
+
+  Future<void> getData() async {
+    _phone = await save.getPhoneNum();
+    _address = await save.getHomeAddress();
+    double balance = await save.getBalance();
+    _wallet = balance.toString();
+    _officeAddress = await save.getWorkAddress();
+  }
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -60,27 +70,11 @@ class ProfileState extends State<ProfilePage>{
 
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-      child: Text(
-        _fullName,
-        style: _nameTextStyle,
-      ),
-    );
-  }
-
-  Widget _buildStatus(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: Text(
-        _status,
-        style: TextStyle(
-          fontFamily: 'Spectral',
-          color: Colors.black,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w300,
+      child: FutureBuilder(
+        future: save.getName(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+          snapshot.data,
+          style: _nameTextStyle,
         ),
       ),
     );
@@ -213,11 +207,10 @@ class ProfileState extends State<ProfilePage>{
                   SizedBox(height: screenSize.height / 6.3),
                   _buildProfileImage(),
                   _buildFullName(),
-                  _buildStatus(context),
-                  _buildStatContainer("Phone", "0961515949"),
-                  _buildStatContainer("Address", "47B Vườn Lài quận 12"),
-                  _buildStatContainer("Wallet", "700.000Vnđ"),
-                  _buildStatContainer("Office Address", "13A Hoàng Diệu Quận 2"),
+                  _buildStatContainer("Phone", "$_phone"),
+                  _buildStatContainer("Address", "$_address"),
+                  _buildStatContainer("Wallet", "$_wallet"),
+                  _buildStatContainer("Office Address", "$_officeAddress"),
                   _buildSeparator(screenSize),
                   SizedBox(height: 10.0),
                   // _buildGetInTouch(context),
