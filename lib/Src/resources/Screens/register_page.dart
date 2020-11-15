@@ -1,4 +1,3 @@
-
 import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/blocs/register_bloc.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
@@ -34,14 +33,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           constraints: BoxConstraints.expand(),
           color: Colors.white,
           child: Column(
@@ -71,10 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 color: kPrimaryLightColor,
               ),
               Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 color: Colors.white,
                 margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                 child: Column(
@@ -90,25 +80,23 @@ class _RegisterPageState extends State<RegisterPage> {
                               size: 30,
                             )),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
-                          child: StreamBuilder (
-                            stream: _registerBloc.nameStream,
-                            builder: (context, snapshot) => TextField(
-                              controller: _nameController,
-                              style: TextStyle(fontSize: 18, color: Colors.black),
-                              decoration: InputDecoration(
-                                errorText: snapshot.hasError ? snapshot.error : null,
-                                labelText: "FULL NAME",
-                                labelStyle: TextStyle(color: Colors.black),
-                                border: InputBorder.none,
+                            margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: StreamBuilder(
+                              stream: _registerBloc.nameStream,
+                              builder: (context, snapshot) => TextField(
+                                controller: _nameController,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                                decoration: InputDecoration(
+                                  errorText:
+                                      snapshot.hasError ? snapshot.error : null,
+                                  labelText: "FULL NAME",
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ),
-                          )
-                        ),
+                            )),
                       ],
                     ),
                     const Divider(
@@ -130,26 +118,24 @@ class _RegisterPageState extends State<RegisterPage> {
                               size: 30,
                             )),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
-                          child: StreamBuilder(
-                            stream: _registerBloc.emailStream,
-                            builder: (context, snapshot) => TextFormField(
-                              controller: _emailController,
-                              style: TextStyle(fontSize: 18, color: Colors.black),
-                              // initialValue: _emailController.text,
-                              decoration: InputDecoration(
-                                errorText: snapshot.hasError ? snapshot.error : null,
-                                labelText: "EMAIL",
-                                labelStyle: TextStyle(color: Colors.black),
-                                border: InputBorder.none,
+                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: StreamBuilder(
+                              stream: _registerBloc.emailStream,
+                              builder: (context, snapshot) => TextFormField(
+                                controller: _emailController,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                                // initialValue: _emailController.text,
+                                decoration: InputDecoration(
+                                  errorText:
+                                      snapshot.hasError ? snapshot.error : null,
+                                  labelText: "EMAIL",
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ),
-                          )
-                        ),
+                            )),
                       ],
                     ),
                     const Divider(
@@ -171,26 +157,24 @@ class _RegisterPageState extends State<RegisterPage> {
                               size: 30,
                             )),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
-                          child: StreamBuilder(
-                            stream: _registerBloc.phoneNumStream,
-                            builder: (context, snapshot) => TextFormField(
-                              controller: _phoneNumController,
-                              style: TextStyle(fontSize: 18, color: Colors.black),
-                              decoration: InputDecoration(
-                                hintText: phoneNumberController.text,
-                                errorText: snapshot.hasError ? snapshot.error : null,
-                                labelText: "PHONE",
-                                labelStyle: TextStyle(color: Colors.black),
-                                border: InputBorder.none,
+                            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: StreamBuilder(
+                              stream: _registerBloc.phoneNumStream,
+                              builder: (context, snapshot) => TextFormField(
+                                controller: _phoneNumController,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                                decoration: InputDecoration(
+                                  hintText: phoneNumberController.text,
+                                  errorText:
+                                      snapshot.hasError ? snapshot.error : null,
+                                  labelText: "PHONE",
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ),
-                          )
-                        ),
+                            )),
                       ],
                     ),
                     const Divider(
@@ -200,10 +184,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       endIndent: 20,
                     ),
                     Container(
-                        margin:const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: Text(
                           'We will send verification code on above given number',
-                          style: TextStyle(color: Colors.black26),)),
+                          style: TextStyle(color: Colors.black26),
+                        )),
                     Row(
                       children: [
                         Container(
@@ -214,25 +199,23 @@ class _RegisterPageState extends State<RegisterPage> {
                               size: 30,
                             )),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
-                          child: StreamBuilder(
-                            stream: _registerBloc.homeAddressStream,
-                            builder: (context, snapshot) => TextField(
-                              controller: _homeAddressController,
-                              style: TextStyle(fontSize: 18, color: Colors.black),
-                              decoration: InputDecoration(
-                                labelText: "HOME ADDRESS",
-                                errorText: snapshot.hasError ? snapshot.error : null,
-                                labelStyle: TextStyle(color: Colors.black),
-                                border: InputBorder.none,
+                            margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: StreamBuilder(
+                              stream: _registerBloc.homeAddressStream,
+                              builder: (context, snapshot) => TextField(
+                                controller: _homeAddressController,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                                decoration: InputDecoration(
+                                  labelText: "HOME ADDRESS",
+                                  errorText:
+                                      snapshot.hasError ? snapshot.error : null,
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ),
-                          )
-                        ),
+                            )),
                       ],
                     ),
                     const Divider(
@@ -255,16 +238,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             )),
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 22, 10, 0),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.8,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: TextField(
                             controller: _officeAddressController,
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             decoration: InputDecoration(
                               labelText: "OFFICE ADDRESS",
-
                               labelStyle: TextStyle(color: Colors.black),
                               border: InputBorder.none,
                             ),
@@ -330,8 +309,8 @@ class _RegisterPageState extends State<RegisterPage> {
       _homeAddress = "";
     }
 
-
-    if (_registerBloc.isValidRegister(_nameController.text, _email, _phone, _homeAddress, _workAddress)) {
+    if (_registerBloc.isValidRegister(
+        _nameController.text, _email, _phone, _homeAddress, _workAddress)) {
       bool isExistAccount = await isExitAccount(_email, _phone);
       if (!isExistAccount) {
         Account account = new Account.n(_phone, _email, "sender", "active");
@@ -356,7 +335,6 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
   }
-
 
   //Đăng ký tài khoản
   Future<bool> registerAccount(Account account) async {

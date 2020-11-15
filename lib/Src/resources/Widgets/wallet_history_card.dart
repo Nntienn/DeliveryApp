@@ -1,12 +1,12 @@
-import 'package:delivery_app/Src/configs/constants.dart';
+
 import 'package:delivery_app/Src/models/Product.dart';
 import 'package:flutter/material.dart';
 
-class ItemCard extends StatelessWidget {
+class WalletCard extends StatelessWidget {
   final Product product;
   final Function press;
 
-  const ItemCard({
+  const WalletCard({
     Key key,
     this.product,
     this.press,
@@ -20,29 +20,27 @@ class ItemCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Loại giao dịch'),
-            Text('Thời Gian'),
             Row(
               children: [
-                Text('Mô tả'),
+                Text('From:'),
                 Spacer(),
                 Text(
-                  'Số tiền',
+                  'Amount',//thay bằng số tiền
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-            SizedBox(
-              height: 5,
+            ),//đoạn này cộng chuỗi lấy điểm gửi
+            Text('At:'),//Đoạn này cộng chuỗi lấy thời gian gửi
+            Row(
+              children: [
+                Text('Decription'),
+                Spacer(),
+                Container(height: 18,width: 70,
+                  child: FlatButton(
+                    child: Text('detail', textAlign: TextAlign.end,style: TextStyle(color: Colors.redAccent, fontSize: 13),),
+                  ),
+                )
+              ],
             ),
           ],
         ),

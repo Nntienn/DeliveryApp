@@ -1,10 +1,16 @@
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
 import 'package:delivery_app/Src/blocs/home_bloc.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
+import 'package:delivery_app/Src/models/place_item_res.dart';
+import 'package:delivery_app/Src/models/trip_info_res.dart';
+import 'package:delivery_app/Src/repository/place_service.dart';
+import 'package:delivery_app/Src/resources/Widgets/ride_picker.dart';
+import 'package:delivery_app/Src/resources/Widgets/ride_picker_1.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'Loading.dart';
+import 'checkout_page.dart';
 
 
 
@@ -18,6 +24,9 @@ class HomePage extends StatefulWidget{
 
 }
 class _MyHomeState extends State<HomePage>{
+  var _tripDistance = 0;
+  double MyDistance = 0;
+  final Map<String, Marker> _markers = <String, Marker>{};
   HomeBloc _homeBloc = new HomeBloc();
   SaveData _save = new SaveData();
   String _address;
@@ -88,33 +97,34 @@ class _MyHomeState extends State<HomePage>{
                       ],
                     ),
                   ),
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: TextField(
-                        cursorColor: Colors.black26,
-                        style: TextStyle(fontSize: 15),
-                        controller: addressController,
-                        decoration: InputDecoration(
-                          hintText: "Enter other address",
-                          contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          // enabledBorder: UnderlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.black26),
-                          // ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black26),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
-                          ),
-                          border: OutlineInputBorder(
-                            // width: 0.0 produces a thin "hairline" border
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.white24),
-                            //borderSide: const BorderSide(),
-                          ),
-                        ),
-                      ),
-                  ),
+                  // Container(
+                  //     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  //     child: TextField(
+                  //       cursorColor: Colors.black26,
+                  //       style: TextStyle(fontSize: 15),
+                  //       controller: addressController,
+                  //       decoration: InputDecoration(
+                  //         hintText: "Enter other address",
+                  //         contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                  //         // enabledBorder: UnderlineInputBorder(
+                  //         //   borderSide: BorderSide(color: Colors.black26),
+                  //         // ),
+                  //         focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.black26),
+                  //           borderRadius:
+                  //           BorderRadius.all(Radius.circular(20.0)),
+                  //         ),
+                  //         border: OutlineInputBorder(
+                  //           // width: 0.0 produces a thin "hairline" border
+                  //           borderRadius:
+                  //           BorderRadius.all(Radius.circular(20.0)),
+                  //           borderSide: BorderSide(color: Colors.white24),
+                  //           //borderSide: const BorderSide(),
+                  //         ),
+                  //       ),
+                  //     ),
+                  // ),
+                  RidePicker1(onPlaceSelected),
                   Container(
                     margin: const EdgeInsets.fromLTRB(5, 10, 0, 10),
                     child: CustomRadioButton(
@@ -217,29 +227,30 @@ class _MyHomeState extends State<HomePage>{
                       ),
                     ],
                   ),
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: TextField(
-                        cursorColor: Colors.black26,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          // enabledBorder: UnderlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.black26),
-                          // ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black26),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(90.0)),
-                          ),
-                          border: OutlineInputBorder(
-                            // width: 0.0 produces a thin "hairline" border
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(90.0)),
-                            borderSide: BorderSide(color: Colors.white24),
-                            //borderSide: const BorderSide(),
-                          ),
-                        ),
-                      )),
+                  // Container(
+                  //     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  //     child: TextField(
+                  //       cursorColor: Colors.black26,
+                  //       decoration: InputDecoration(
+                  //         contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                  //         // enabledBorder: UnderlineInputBorder(
+                  //         //   borderSide: BorderSide(color: Colors.black26),
+                  //         // ),
+                  //         focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.black26),
+                  //           borderRadius:
+                  //           BorderRadius.all(Radius.circular(90.0)),
+                  //         ),
+                  //         border: OutlineInputBorder(
+                  //           // width: 0.0 produces a thin "hairline" border
+                  //           borderRadius:
+                  //           BorderRadius.all(Radius.circular(90.0)),
+                  //           borderSide: BorderSide(color: Colors.white24),
+                  //           //borderSide: const BorderSide(),
+                  //         ),
+                  //       ),
+                  //     )),
+                  RidePicker(onPlaceSelected),
                   SizedBox(
                     height: 10,
                   ),
@@ -354,7 +365,13 @@ class _MyHomeState extends State<HomePage>{
                     width: MediaQuery.of(context).size.width,
                     child: FlatButton(
                       onPressed: () {
-
+                        print("$MyDistance");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CheckoutPage(MyDistance : MyDistance),
+                          ),
+                        );
                       },
                       // => Navigator.push(
                       //     context, MaterialPageRoute(builder: (context) => ())),
@@ -382,6 +399,35 @@ class _MyHomeState extends State<HomePage>{
       case 1: _address = _homeAddress; break;
       case 2: _address = _officeAddress; break;
       case 3: _address = _otherAddress; break;
+    }
+  }
+  void _addMarker(String mkId, PlaceItemRes place) async {
+    _markers[mkId] = Marker(markerId: MarkerId(mkId),position: LatLng(place.lat, place.lng)
+    );
+  }
+  void onPlaceSelected(PlaceItemRes place, bool fromAddress) {
+    var mkId = fromAddress ? "from_address" : "to_address";
+    _addMarker(mkId, place);
+    _checkDrawPolyline();
+  }
+
+  void _checkDrawPolyline() {
+    if (_markers.length > 1) {
+      var from = _markers["from_address"].position;
+      var to = _markers["to_address"].position;
+      PlaceService.getStep(
+          from.latitude, from.longitude, to.latitude, to.longitude)
+          .then((vl) {
+        TripInfoRes infoRes = vl;
+        _tripDistance = infoRes.distance;
+        print("$_tripDistance" + " meter");
+        print("$MyDistance" + " km aha");
+        setState(() {
+          MyDistance = _tripDistance/1000 as double ;
+        });
+        print("$MyDistance" + " km");
+//        print(paths);
+      });
     }
   }
 }

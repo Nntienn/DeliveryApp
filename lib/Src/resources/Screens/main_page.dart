@@ -1,4 +1,3 @@
-
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/resources/Screens/history_page.dart';
 import 'package:delivery_app/Src/resources/Screens/profile_page.dart';
@@ -8,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import 'home_page.dart';
-
-
 
 class MainPage extends StatefulWidget {
   @override
@@ -21,6 +18,7 @@ class MainPage extends StatefulWidget {
 class MyPageState extends State<MainPage> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
+  bool btopleft = false;
 
   List<Widget> _widgetOptions = <Widget>[
     HomePage(),
@@ -31,12 +29,11 @@ class MyPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: new AppBar(
-        automaticallyImplyLeading : false,
+        automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
         title: Text(
@@ -45,111 +42,7 @@ class MyPageState extends State<MainPage> {
         ),
         actions: <Widget>[
           // Image.asset("assets/ic_notify.png"),
-          Container(
-            width: 120,
-            child: FlatButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => PriceListPage()),
-                // );
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(20.0)), //this right here
-                        child: Container(
-                          height: 210,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Bảng Giá',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                ),
-                                Row(children: [
-                                  Text('2km đầu tiên(*)'),
-                                  Spacer(),
-                                  Text(
-                                    '14.500 đ',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ]),
-                                Row(children: [
-                                  Text('1km tiếp theo'),
-                                  Spacer(),
-                                  Text(
-                                    '5.5000 đ',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ]),
-                                Row(children: [
-                                  Text('200k COD đầu tiên(**)'),
-                                  Spacer(),
-                                  Text(
-                                    '0 đ',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ]),
-                                Row(children: [
-                                  Text('201k - 500k COD'),
-                                  Spacer(),
-                                  Text(
-                                    '5.500 đ',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ]),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('(*) Giá tối thiểu'),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('(**)COD: Số tiền thu hộ'),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 320.0,
-                                  child: RaisedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      "Quay Lại",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    color: Colors.redAccent,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    });
-              },
-              child: Text(
-                'Bảng giá',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white,
-                    decoration: TextDecoration.underline),
-              ),
-            ),
-            margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-          ),
+          topleft(),
         ],
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
@@ -168,7 +61,7 @@ class MyPageState extends State<MainPage> {
             title: Text('HOME'),
             activeIcon: Icon(
               Feather.home,
-              color:Colors.lightBlueAccent,
+              color: Colors.lightBlueAccent,
             ),
           ),
           BottomNavigationBarItem(
@@ -180,7 +73,7 @@ class MyPageState extends State<MainPage> {
             title: Text('WALLET'),
             activeIcon: Icon(
               AntDesign.wallet,
-              color:Colors.lightBlueAccent,
+              color: Colors.lightBlueAccent,
             ),
           ),
           BottomNavigationBarItem(
@@ -211,13 +104,143 @@ class MyPageState extends State<MainPage> {
           ),
         ],
         onTap: (index) {
+          if (index == 1) {
+            setState(() {
+              btopleft = true;
+            });
+            ;
+          } else {
+            setState(() {
+              btopleft = false;
+            });
+          }
           setState(() {
             _selectedIndex = index;
           });
         },
       ),
     );
+  }
 
+  Widget topleft() {
+    if (btopleft) {
+      return Container(
+          width: 120,
+          child: FlatButton(
+            onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => PriceListPage()),
+              // );
+            },
+            child: Text(
+              'Withdraw',
+              style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  decoration: TextDecoration.underline),
+            ),
+          ));
+    } else {
+      return Container(
+        width: 120,
+        child: FlatButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 210,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Price List',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            Row(children: [
+                              Text('2km đầu tiên(*)'),
+                              Spacer(),
+                              Text(
+                                '14.500 đ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(children: [
+                              Text('1km tiếp theo'),
+                              Spacer(),
+                              Text(
+                                '5.5000 đ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(children: [
+                              Text('200k COD đầu tiên(**)'),
+                              Spacer(),
+                              Text(
+                                '0 đ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(children: [
+                              Text('201k - 500k COD'),
+                              Spacer(),
+                              Text(
+                                '5.500 đ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('(*) Giá tối thiểu'),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('(**)COD: Số tiền thu hộ'),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 320.0,
+                              child: RaisedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  "Quay Lại",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: Colors.redAccent,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          },
+          child: Text(
+            'Price List',
+            style: TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                decoration: TextDecoration.underline),
+          ),
+        ),
+        margin: const EdgeInsets.fromLTRB(0, 5, 5, 5),
+      );
+    }
   }
 
   myBoxDecoration() {
@@ -227,7 +250,7 @@ class MyPageState extends State<MainPage> {
       ),
       borderRadius: BorderRadius.all(
           Radius.circular(5.0) //         <--- border radius here
-      ),
+          ),
     );
   }
 }

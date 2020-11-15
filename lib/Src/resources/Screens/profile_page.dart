@@ -1,291 +1,225 @@
-import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ProfileState();
+  }
+  
+}
+
+class ProfileState extends State<ProfilePage>{
+  final String _fullName = "Thuan Hoang";
+  final String _status = "Software Developer";
+
+  Widget _buildCoverImage(Size screenSize) {
+    return Container(
+      height: screenSize.height / 4,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/cover.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProfileImage() {
+    return Center(
+      child: Container(
+        width: 150.0,
+        height: 150.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/thuan.jpg'),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Colors.white,
+            width: 10.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullName() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 28.0,
+      fontWeight: FontWeight.w700,
+    );
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: Text(
+        _fullName,
+        style: _nameTextStyle,
+      ),
+    );
+  }
+
+  Widget _buildStatus(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Text(
+        _status,
+        style: TextStyle(
+          fontFamily: 'Spectral',
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String label) {
+    TextStyle _statLabelTextStyle = TextStyle(
+      color: Colors.black54,
+      fontSize: 17.0,
+      fontWeight: FontWeight.bold,
+    );
+    return Container(
+      width: MediaQuery.of(context).size.width*0.4,
+      child:
+        Text(
+          label,
+          style: _statLabelTextStyle,
+        ),
+    );
+  }
+  Widget _buildStatItem1(String label) {
+    TextStyle _statLabelTextStyle = TextStyle(
+      color: Colors.black54,
+      fontSize: 17.0,
+      fontWeight: FontWeight.bold,
+    );
+    return Container(
+      width: MediaQuery.of(context).size.width*0.4,
+      child:
+      Text(
+        label,
+        style: _statLabelTextStyle,
+        textAlign: TextAlign.left,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget _buildStatContainer(String title,String data) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      height: 40.0,
+      margin: EdgeInsets.only(top: 8.0),
+      decoration: BoxDecoration(
+        color: Color(0xFFEFF4F7),
+      ),
+      child: Row(
+        children: <Widget>[
+          _buildStatItem("$title"),
+          Spacer(),
+          _buildStatItem1("$data"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeparator(Size screenSize) {
+    return Container(
+      width: screenSize.width / 1.6,
+      height: 2.0,
+      color: Colors.black54,
+      margin: EdgeInsets.only(top: 4.0),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              onTap: () => print("followed"),
+              child: Container(
+                height: 40.0,
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  color: Color(0xFF404A5C),
+                ),
+                child: Center(
+                  child: Text(
+                    "Log Out",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // SizedBox(width: 10.0),
+          // Expanded(
+          //   child: InkWell(
+          //     onTap: () => print("Message"),
+          //     child: Container(
+          //       height: 40.0,
+          //       decoration: BoxDecoration(
+          //         border: Border.all(),
+          //       ),
+          //       child: Center(
+          //         child: Padding(
+          //           padding: EdgeInsets.all(10.0),
+          //           child: Text(
+          //             "MESSAGE",
+          //             style: TextStyle(fontWeight: FontWeight.w600),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Color(0x88999999),
-                offset: Offset(0, 5),
-                blurRadius: 5.0,
+    Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          _buildCoverImage(screenSize),
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: screenSize.height / 6.3),
+                  _buildProfileImage(),
+                  _buildFullName(),
+                  _buildStatus(context),
+                  _buildStatContainer("Phone", "0961515949"),
+                  _buildStatContainer("Address", "47B Vườn Lài quận 12"),
+                  _buildStatContainer("Wallet", "700.000Vnđ"),
+                  _buildStatContainer("Office Address", "13A Hoàng Diệu Quận 2"),
+                  _buildSeparator(screenSize),
+                  SizedBox(height: 10.0),
+                  // _buildGetInTouch(context),
+                  SizedBox(height: 8.0),
+                  _buildButtons(),
+                ],
               ),
-            ]),
-            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Column(
-              children: [
-                Container(
-                    margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    child: Text(
-                      'Người gửi',
-                      style: TextStyle(
-                          color: Colors.black38,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    )),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: Text(
-                          'Nguyen Thai Binh',
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        child: Text(
-                          '|',
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Text(
-                          '+84854146162',
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.85,
-                        child: Text(
-                          '9A2 Đường Man Thiện, Hiệp Phú, Quận 9,Thành Phố Hồ Chí Minh',
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(color: Colors.white,
-                // borderRadius: BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x88999999),
-                    offset: Offset(0, 5),
-                    blurRadius: 5.0,
-                  ),
-                ]),
-            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Column(
-              children: [
-                Container(
-                    margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    child: Text(
-                      'Thông tin người nhận',
-                      style: TextStyle(
-                          color: Colors.black38,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Text(
-                        'Họ và tên',
-                        style: TextStyle(color: Colors.black38, fontSize: 17),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: TextField(
-                      cursorColor: Colors.black26,
-                      decoration: InputDecoration(
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.black26),
-                        // ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26),
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                        ),
-                        border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                          borderSide: BorderSide(color: Colors.white24),
-                          //borderSide: const BorderSide(),
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Text(
-                        'Địa chỉ',
-                        style: TextStyle(color: Colors.black38, fontSize: 17),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: TextField(
-                      cursorColor: Colors.black26,
-                      decoration: InputDecoration(
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.black26),
-                        // ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26),
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                        ),
-                        border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                          borderSide: BorderSide(color: Colors.white24),
-                          //borderSide: const BorderSide(),
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Text(
-                        'Số điện thoại',
-                        style: TextStyle(color: Colors.black38, fontSize: 17),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(fontSize: 17),
-                      textAlign: TextAlign.center,
-                      cursorColor: Colors.black26,
-                      cursorRadius: Radius.circular(5.0),
-                      decoration: InputDecoration(
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.black26),
-                        // ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26),
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                        ),
-                        border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                          borderSide: BorderSide(color: Colors.white24),
-                          //borderSide: const BorderSide(),
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Text(
-                        'Thu hộ/ COD',
-                        style: TextStyle(color: Colors.black38, fontSize: 17),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        '*(tùy chọn)',
-                        style: TextStyle(color: Colors.black38, fontSize: 13),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(fontSize: 17),
-                      textAlign: TextAlign.center,
-                      cursorColor: Colors.black26,
-                      cursorRadius: Radius.circular(5.0),
-                      decoration: InputDecoration(
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(color: Colors.black26),
-                        // ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black26),
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                        ),
-                        border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                          borderSide: BorderSide(color: Colors.white24),
-                          //borderSide: const BorderSide(),
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Color(0x88999999),
-                offset: Offset(0, 5),
-                blurRadius: 5.0,
-              ),
-            ]),
-            margin: const EdgeInsets.fromLTRB(5, 10, 5, 0),
-            height: 60,
-            child: Column(
-              children: [
-                Container(
-                  color: kPrimaryColor,
-                  height: 60,
-                  width: MediaQuery.of(context).size.width,
-                  child: FlatButton(
-                    onPressed: () {},
-                    // => Navigator.push(
-                    //     context, MaterialPageRoute(builder: (context) => ())),
-                    color: kPrimaryColor,
-                    child: Text(
-                      'Continue',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],
