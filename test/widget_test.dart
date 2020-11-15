@@ -17,16 +17,15 @@ import 'package:delivery_app/Src/configs/link.dart';
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
 import 'package:delivery_app/Src/models/transaction.dart';
+import 'package:delivery_app/Src/models/transaction_detail.dart';
 import 'package:http/http.dart';
 import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 
 Future<void> main() async {
-
     HistoryApi api = new HistoryApi();
-    Response response = await api.getTransactionByID("SDTESTSENDER1");
-    List<Transaction> list = await api.convertJsonToListTransaction(response);
-    list.forEach((trans) {
-        print(trans.type + " " + trans.senderId);
-    });
+    Response response = await api.getTransactionDetailByID("1");
+    TransactionDetail transactionDetail = await api.convertJsonToTransactionDetail(response);
+    print(response.body);
+    print(transactionDetail.receiverPhoneNum + transactionDetail.pickedTime + transactionDetail.receiverAddress);
 }

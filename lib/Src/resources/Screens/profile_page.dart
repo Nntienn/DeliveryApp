@@ -1,3 +1,7 @@
+
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
+import 'package:delivery_app/Src/resources/Screens/login_page.dart';
+import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget{
@@ -10,6 +14,7 @@ class ProfilePage extends StatefulWidget{
 }
 
 class ProfileState extends State<ProfilePage>{
+  SaveData save = new SaveData();
   final String _fullName = "Thuan Hoang";
   final String _status = "Software Developer";
 
@@ -88,7 +93,7 @@ class ProfileState extends State<ProfilePage>{
       fontWeight: FontWeight.bold,
     );
     return Container(
-      width: MediaQuery.of(context).size.width*0.4,
+      width: MediaQuery.of(this.context).size.width*0.4,
       child:
         Text(
           label,
@@ -103,7 +108,7 @@ class ProfileState extends State<ProfilePage>{
       fontWeight: FontWeight.bold,
     );
     return Container(
-      width: MediaQuery.of(context).size.width*0.4,
+      width: MediaQuery.of(this.context).size.width*0.4,
       child:
       Text(
         label,
@@ -149,7 +154,7 @@ class ProfileState extends State<ProfilePage>{
         children: <Widget>[
           Expanded(
             child: InkWell(
-              onTap: () => print("followed"),
+              onTap: _onClickLogOut,
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(
@@ -225,5 +230,16 @@ class ProfileState extends State<ProfilePage>{
         ],
       ),
     );
+  }
+
+  Future<void> _onClickLogOut() {
+    save.logOut();
+    try {
+      googleSignIn.signOut();
+    } catch(err) {
+      print('$err');
+    }
+    Navigator.push(
+        this.context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

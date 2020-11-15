@@ -1,3 +1,5 @@
+import 'package:delivery_app/Src/models/transaction_detail.dart';
+
 part 'transaction.g.dart';
 
 class Transaction {

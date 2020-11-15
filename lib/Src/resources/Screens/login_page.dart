@@ -9,6 +9,7 @@ import 'package:delivery_app/Src/resources/Screens/main_page.dart';
 import 'package:delivery_app/Src/resources/Widgets/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   Future<void> loginUser(String phone, BuildContext context) async {
+    await Firebase.initializeApp();
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     _auth.verifyPhoneNumber(

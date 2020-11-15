@@ -1,6 +1,5 @@
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
-import 'package:delivery_app/Src/models/wallet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveData {
@@ -73,5 +72,10 @@ class SaveData {
     String phoneNum = sp.getString('phoneNum');
     String walletId = sp.getString('walletId');
     return new Sender.n(id, name, homeAddress, workAddress, phoneNum, walletId);
+  }
+
+  Future<void> logOut() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.clear();
   }
 }
