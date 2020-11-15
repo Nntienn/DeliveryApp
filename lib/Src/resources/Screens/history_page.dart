@@ -1,6 +1,4 @@
 import 'package:delivery_app/Src/configs/constants.dart';
-import 'package:delivery_app/Src/models/Product.dart';
-import 'package:delivery_app/Src/resources/Screens/booking_detail.dart';
 import 'package:delivery_app/Src/resources/Widgets/delivery_history_card.dart';
 import 'package:delivery_app/Src/models/transaction.dart';
 import 'package:delivery_app/Src/api_util/history.dart';
@@ -10,32 +8,42 @@ import 'package:delivery_app/Src/models/transaction_detail.dart';
 import 'package:delivery_app/Src/models/history_model.dart';
 import 'package:http/http.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
+  @override
+  _HistoryPageState createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
   SaveData save = new SaveData();
+
   HistoryApi api = new HistoryApi();
 
   Future<List<History_Model>> getListTransaction() async {
     String senderId = await save.getId();
+    print(senderId);
     Response response = await api.getTransactionBySenderID(senderId);
     List<Transaction> list = await api.convertJsonToListTransaction(response);
     List<Transaction> listTransactionTypeSending =
-        await api.getListTransactionTypeSending(list);
+    await api.getListTransactionTypeSending(list);
     list.clear();
     List<History_Model> listHistoryModel = List();
-    listTransactionTypeSending.forEach((element) async {
-      Response response = await api
-          .getTransactionDetailByID(element.transactionDetailsId.toString());
+    for (int i = 0; i < listTransactionTypeSending.length; i++) {
+      Response json = await api.getTransactionDetailByID(
+          listTransactionTypeSending[i].transactionDetailsId.toString());
+      print(json.body);
       TransactionDetail transactionDetail =
-          await api.convertJsonToTransactionDetail(response);
+      await api.convertJsonToTransactionDetail(json);
+      print(transactionDetail.transactionDetailsId.toString() +
+          transactionDetail.receiverAddress);
       listHistoryModel.add(new History_Model(
-          element.type,
+          listTransactionTypeSending[i].type,
           transactionDetail.senderAddress,
           transactionDetail.receiverAddress,
           transactionDetail.completedTime,
           transactionDetail.status,
           transactionDetail.amount));
-    });
-    listHistoryModel.clear();
+    }
+    listTransactionTypeSending.clear();
     return listHistoryModel;
   }
 
