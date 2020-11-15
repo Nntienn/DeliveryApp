@@ -1,4 +1,5 @@
 import 'package:delivery_app/Src/configs/constants.dart';
+import 'package:delivery_app/Src/resources/Screens/Withdraw_page.dart';
 import 'package:delivery_app/Src/resources/Screens/history_page.dart';
 import 'package:delivery_app/Src/resources/Screens/profile_page.dart';
 import 'package:delivery_app/Src/resources/Screens/wallet_page.dart';
@@ -128,10 +129,10 @@ class MyPageState extends State<MainPage> {
           width: 120,
           child: FlatButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => PriceListPage()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WithdrawPage()),
+              );
             },
             child: Text(
               'Withdraw',

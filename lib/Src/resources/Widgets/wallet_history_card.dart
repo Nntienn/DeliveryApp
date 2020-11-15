@@ -22,7 +22,7 @@ class WalletCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: [
-                Text('From:'),
+                Text('Withdraw'),//thay bang loai giao dich
                 Spacer(),
                 Text(
                   'Amount',//thay bằng số tiền
@@ -34,12 +34,6 @@ class WalletCard extends StatelessWidget {
             Row(
               children: [
                 Text('Decription'),
-                Spacer(),
-                Container(height: 18,width: 70,
-                  child: FlatButton(
-                    child: Text('detail', textAlign: TextAlign.end,style: TextStyle(color: Colors.redAccent, fontSize: 13),),
-                  ),
-                )
               ],
             ),
           ],
