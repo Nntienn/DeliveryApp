@@ -15,17 +15,29 @@ class ProfilePage extends StatefulWidget{
 
 class ProfileState extends State<ProfilePage>{
   SaveData save = new SaveData();
+  String _name = "";
   String _phone = "";
   String _address = "";
   String _wallet = "";
   String _officeAddress = "";
 
-  Future<void> getData() async {
+  Future<String> getName() async {
+    _name = await save.getName();
+    return _name;
+  }
+
+  Future<List<String>> getData() async {
     _phone = await save.getPhoneNum();
     _address = await save.getHomeAddress();
     double balance = await save.getBalance();
     _wallet = balance.toString();
     _officeAddress = await save.getWorkAddress();
+    List<String> list = List();
+    list.add(_phone);
+    list.add(_address);
+    list.add(_wallet);
+    list.add(_officeAddress);
+    return list;
   }
 
   Widget _buildCoverImage(Size screenSize) {
@@ -71,8 +83,8 @@ class ProfileState extends State<ProfilePage>{
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
       child: FutureBuilder(
-        future: save.getName(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+        future: getName(),
+        builder: (context, snapshot) => Text(
           snapshot.data,
           style: _nameTextStyle,
         ),
@@ -201,22 +213,26 @@ class ProfileState extends State<ProfilePage>{
         children: <Widget>[
           _buildCoverImage(screenSize),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: screenSize.height / 6.3),
-                  _buildProfileImage(),
-                  _buildFullName(),
-                  _buildStatContainer("Phone", "$_phone"),
-                  _buildStatContainer("Address", "$_address"),
-                  _buildStatContainer("Wallet", "$_wallet"),
-                  _buildStatContainer("Office Address", "$_officeAddress"),
-                  _buildSeparator(screenSize),
-                  SizedBox(height: 10.0),
-                  // _buildGetInTouch(context),
-                  SizedBox(height: 8.0),
-                  _buildButtons(),
-                ],
+            child: FutureBuilder<List<String>>(
+              future: getData(),
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) => SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: screenSize.height / 6.3),
+                    _buildProfileImage(),
+                    _buildFullName(),
+                    _buildStatContainer("Phone", snapshot.data[0]),
+                    _buildStatContainer("Address", snapshot.data[1]),
+                    _buildStatContainer("Wallet", snapshot.data[2]),
+                    _buildStatContainer("Office Address", snapshot.data[3]),
+                    _buildSeparator(screenSize),
+                    SizedBox(height: 10.0),
+                    // _buildGetInTouch(context),
+                    SizedBox(height: 8.0),
+                    _buildButtons(),
+                  ],
+                ),
               ),
             ),
           ),
