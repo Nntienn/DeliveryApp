@@ -11,24 +11,22 @@
 
 import 'dart:convert';
 
+import 'package:delivery_app/Src/api_util/history.dart';
 import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/configs/link.dart';
 import 'package:delivery_app/Src/models/account.dart';
 import 'package:delivery_app/Src/models/sender.dart';
+import 'package:delivery_app/Src/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 
 Future<void> main() async {
 
-    RegisterApi api = new RegisterApi();
-    Response response = await api.getSenderByPhoneNum("01885582656");
-    if (response.statusCode == 200) {
-        Sender sender = await api.convertJsonToSender(response);
-        double balance = await api.getBalance(sender.walletId);
-        SaveData save = new SaveData();
-        save.saveBalance(balance);
-        print(await save.getBalance());
-  }
-
+    HistoryApi api = new HistoryApi();
+    Response response = await api.getTransactionByID("SDTESTSENDER1");
+    List<Transaction> list = await api.convertJsonToListTransaction(response);
+    list.forEach((trans) {
+        print(trans.type + " " + trans.senderId);
+    });
 }
