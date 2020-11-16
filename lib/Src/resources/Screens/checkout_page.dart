@@ -2,7 +2,6 @@
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/models/billing.dart';
-import 'package:delivery_app/Src/models/trip_info_res.dart';
 import 'package:delivery_app/Src/resources/Screens/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -236,6 +235,22 @@ class CheckoutState extends State<CheckoutPage>{
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: kPrimaryColor,
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+          onPressed: () {
+          },
+          // => Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => ())),
+          color: kPrimaryColor,
+          child: Text(
+            'Continue',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
         ),
       ),
     );

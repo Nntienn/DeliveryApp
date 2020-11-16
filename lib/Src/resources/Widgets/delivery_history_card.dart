@@ -14,6 +14,8 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(history.time);
+    print('thuandeptrai');
     return GestureDetector(
       onTap: press,
       child: Container(
@@ -22,22 +24,26 @@ class ItemCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: [
-                Text('From:' + history.senderAddress),
+                Container(
+                  width: MediaQuery.of(context).size.width*0.6,
+                    child: Text('From:' + history.senderAddress, overflow: TextOverflow.ellipsis,)),
                 Spacer(),
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 22, 0),
                   child: Text(
-                    'Price',//thay bằng số tiền
+                    history.price.toString() + 'Vnđ',//thay bằng số tiền
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 )
               ],
             ),//đoạn này cộng chuỗi lấy điểm gửi
-            Text('To:'),//đoạn này cộng chuỗi lấy điểm nhận
-            Text('At:'),//Đoạn này cộng chuỗi lấy thời gian gửi
+            Container(
+                width: MediaQuery.of(context).size.width*0.8,
+                child: Text('To:' + history.receiverAddress, overflow: TextOverflow.ellipsis,)),//đoạn này cộng chuỗi lấy điểm nhận
+            Text('At: ' + history.time),//Đoạn này cộng chuỗi lấy thời gian gửi
             Row(
               children: [
-                Text('Decription'),
+                Text(history.status),
                 Spacer(),
                 Container(height: 18,
                   child: FlatButton(
