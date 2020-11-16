@@ -47,10 +47,10 @@ class CheckoutState extends State<CheckoutPage> {
     print(response.body);
     if (response.statusCode == 201) {
       await api.postTransaction(response, senderId);
-    } else {
-      _errAlert(context, "The system is in error");
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HistoryPage()));
+    } else {
+      _errAlert(context, "The system is in error");
     }
   }
 
@@ -283,7 +283,7 @@ class CheckoutState extends State<CheckoutPage> {
               child: RaisedButton(
                 onPressed: pushData,
                 child: Text(
-                  "Log In",
+                  "Commit",
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 color: Color(0xff3277D8),
@@ -302,7 +302,7 @@ class CheckoutState extends State<CheckoutPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Failed login'),
+          title: Text('Failed'),
           content: Text('$err'),
           actions: [
             FlatButton(
