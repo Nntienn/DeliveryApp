@@ -39,7 +39,7 @@ class _HistoryPageState extends State<HistoryPage> {
           listTransactionTypeSending[i].type,
           transactionDetail.senderAddress,
           transactionDetail.receiverAddress,
-          transactionDetail.completedTime,
+          transactionDetail.useTime,
           transactionDetail.status,
           transactionDetail.amount));
     }
