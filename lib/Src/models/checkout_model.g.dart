@@ -1,7 +1,7 @@
 part of 'checkout_model.dart';
 
-CheckOut_Model _$CheckOutModelFromJson(Map<String, dynamic> json) {
-  return CheckOut_Model()
+CheckOutModel _$CheckOutModelFromJson(Map<String, dynamic> json) {
+  return CheckOutModel()
     ..item = json['item'] as String
     ..amount = json['amount'] as double
     ..useTime = json['useTime'] as String
@@ -15,16 +15,14 @@ CheckOut_Model _$CheckOutModelFromJson(Map<String, dynamic> json) {
     ..status = json['status'] as String;
 }
 
-Map<String, dynamic> _$CheckOutModelToJson(CheckOut_Model instance) => <String, dynamic>{
+Map<String, dynamic> _$CheckOutModelToJson(CheckOutModel instance) => <String, dynamic>{
   'item': instance.item,
   'amount': instance.amount,
   'useTime': instance.useTime,
-  'pickedTime': instance.pickedTime,
-  'completedTime': instance.completedTime,
   'distance': instance.distance,
   'receiverName': instance.receiverName,
   'receiverPhoneNum': instance.receiverPhoneNum,
   'receiverAddress': instance.receiverAddress,
   'senderAddress': instance.senderAddress,
-  'status': instance.status,
+  'status': instance.status
 };

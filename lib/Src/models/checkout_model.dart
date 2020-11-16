@@ -1,6 +1,6 @@
 part 'checkout_model.g.dart';
 
-class CheckOut_Model{
+class CheckOutModel {
   String item;
   double amount;
   String useTime;
@@ -14,9 +14,21 @@ class CheckOut_Model{
   String status;
   String description;
 
-  CheckOut_Model();
-  CheckOut_Model.n(this.item, this.amount, this.useTime, this.distance, this.receiverName, this.receiverPhoneNum, this.receiverAddress, this.senderAddress, this.status);
+  CheckOutModel();
 
-  factory CheckOut_Model.fromJson(Map<String, dynamic> json) => _$CheckOutModelFromJson(json);
+  CheckOutModel.n(
+      this.item,
+      this.amount,
+      this.useTime,
+      this.distance,
+      this.receiverName,
+      this.receiverPhoneNum,
+      this.receiverAddress,
+      this.senderAddress,
+      this.status);
+
+  factory CheckOutModel.fromJson(Map<String, dynamic> json) =>
+      _$CheckOutModelFromJson(json);
+
   Map<String, dynamic> toJson() => _$CheckOutModelToJson(this);
 }

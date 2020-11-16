@@ -26,7 +26,7 @@ class HistoryApi {
   }
 
   Future<http.Response> getTransactionDetailByID(String id) async {
-    return http.get(GET_TRACSACTION_DETAIL_BY_ID + id);
+    return http.get(GET_TRANSACTION_DETAIL_BY_ID + id);
   }
 
   Future<TransactionDetail> convertJsonToTransactionDetail(http.Response response) async {

@@ -18,31 +18,15 @@ import 'package:delivery_app/Src/models/transaction_detail.dart';
 import 'package:http/http.dart';
 import 'package:delivery_app/Src/api_util/register.dart';
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:delivery_app/Src/models/checkout_model.dart';
+import 'package:delivery_app/Src/api_util/checkout.dart';
 
 Future<void> main() async {
-  HistoryApi api = new HistoryApi();
-  Response response = await api.getTransactionBySenderID("SDRaecuzhotaety");
-  List<Transaction> list = await api.convertJsonToListTransaction(response);
-  List<Transaction> listTransactionTypeSending =
-      await api.getListTransactionTypeSending(list);
-  list.clear();
-  List<History_Model> listHistoryModel = List();
-  Response json;
-  for (int i = 0; i < listTransactionTypeSending.length; i++) {
-    Response json = await api.getTransactionDetailByID(
-        listTransactionTypeSending[i].transactionDetailsId.toString());
-    print(json.body);
-    TransactionDetail transactionDetail =
-        await api.convertJsonToTransactionDetail(json);
-    print(transactionDetail.transactionDetailsId.toString() +
-        transactionDetail.receiverAddress);
-    listHistoryModel.add(new History_Model(
-        listTransactionTypeSending[i].type,
-        transactionDetail.senderAddress,
-        transactionDetail.receiverAddress,
-        transactionDetail.completedTime,
-        transactionDetail.status,
-        transactionDetail.amount));
-  }
-  print(listHistoryModel[0].type + listHistoryModel[0].senderAddress);
+  var date = new DateTime.now().toString();
+  CheckOutApi api = new CheckOutApi();
+  Map<String, String> headers = {"Content-type": "application/json"};
+  CheckOutModel checkoutModel = new CheckOutModel.n("fish", 30, date, 2, "Thuan", "0999999999", "117 dong hung", "47B Vuon Lai Quan 12", "sending");
+  http.Response response = await api.postTransactionDetail(checkoutModel);
+  print(response.statusCode.toString() + "    " + response.body);
 }

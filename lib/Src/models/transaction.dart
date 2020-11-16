@@ -10,6 +10,7 @@ class Transaction {
   String type;
 
   Transaction();
+  Transaction.n(this.transactionDetailsId, this.senderId, this.type);
 
 
 

@@ -5,9 +5,11 @@ import 'package:delivery_app/Src/resources/Screens/addfund_page.dart';
 
 import 'package:delivery_app/Src/resources/Widgets/wallet_history_card.dart';
 import 'package:flutter/material.dart';
+import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 
 
 class WalletPage extends StatelessWidget {
+  SaveData save = new SaveData();
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +59,13 @@ class WalletPage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(
-                        '700.000Vnđ',
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                      FutureBuilder(
+                        future: save.getBalance(),
+                        builder: (context, snapshot) => Text(
+                          snapshot.data.toString(),
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   )

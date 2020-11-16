@@ -1,27 +1,57 @@
-
 import 'package:delivery_app/Src/blocs/shared_preferences.dart';
 import 'package:delivery_app/Src/configs/constants.dart';
 import 'package:delivery_app/Src/models/billing.dart';
-import 'package:delivery_app/Src/models/trip_info_res.dart';
+import 'package:delivery_app/Src/models/checkout_model.dart';
+import 'package:delivery_app/Src/resources/Screens/history_page.dart';
 import 'package:delivery_app/Src/resources/Screens/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:delivery_app/Src/api_util/checkout.dart';
+import 'package:http/http.dart' as http;
 
-class CheckoutPage extends StatefulWidget{
+class CheckoutPage extends StatefulWidget {
   Billing bill;
+
   CheckoutPage({this.bill});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return CheckoutState(bill);
   }
 }
-class CheckoutState extends State<CheckoutPage>{
+
+class CheckoutState extends State<CheckoutPage> {
   Billing bill;
+
   CheckoutState(this.bill);
+
   SaveData _save = new SaveData();
 
-  Future<void> pushData() {
-    
+  CheckOutApi api = new CheckOutApi();
+
+  Future<void> pushData() async {
+    double amount = tinhtien(bill.distance);
+    var date = new DateTime.now().toString();
+    CheckOutModel checkoutModel = new CheckOutModel.n(
+        "item",
+        amount,
+        date,
+        bill.distance,
+        receiverNameController.text,
+        receiverPhoneController.text,
+        bill.rAddress,
+        bill.sAddress,
+        "sending");
+    String senderId = await _save.getId();
+    http.Response response = await api.postTransactionDetail(checkoutModel);
+    print(response.body);
+    if (response.statusCode == 201) {
+      await api.postTransaction(response, senderId);
+    } else {
+      _errAlert(context, "The system is in error");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HistoryPage()));
+    }
   }
 
   @override
@@ -70,15 +100,17 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Sender',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   FutureBuilder(
                     future: _save.getName(),
-                    builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+                    builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) =>
+                        Text(
                       snapshot.hasData ? snapshot.data : "Loading",
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -91,15 +123,15 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Address',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
-                      bill.sAddress.toString() ,
+                      bill.sAddress.toString(),
                       textAlign: TextAlign.right,
-                      style: TextStyle( fontSize: 17),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                 ],
@@ -112,15 +144,17 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Phone',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   FutureBuilder(
                     future: _save.getPhoneNum(),
-                    builder: (BuildContext context, AsyncSnapshot<String> snapshot) => Text(
+                    builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) =>
+                        Text(
                       snapshot.hasData ? snapshot.data : "Loading",
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -139,12 +173,12 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Receiver',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Text(
                     receiverNameController.text,
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                 ],
               ),
@@ -156,15 +190,15 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Address',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
                       bill.rAddress.toString(),
                       textAlign: TextAlign.right,
-                      style: TextStyle( fontSize: 17),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                 ],
@@ -177,15 +211,15 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Phone',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
                       receiverPhoneController.text,
                       textAlign: TextAlign.right,
-                      style: TextStyle( fontSize: 17),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                 ],
@@ -204,12 +238,12 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Distance',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Text(
                     bill.distance.toString() + ' km',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                 ],
               ),
@@ -221,18 +255,40 @@ class CheckoutState extends State<CheckoutPage>{
                 children: [
                   Text(
                     'Price',
-                    style: TextStyle( fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   Spacer(),
                   Container(
-                    width: MediaQuery.of(context).size.width*0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
                       tinhtien(bill.distance).toStringAsFixed(3),
                       textAlign: TextAlign.right,
-                      style: TextStyle( fontSize: 17,color: Colors.redAccent,fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
+              ),
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: RaisedButton(
+                onPressed: pushData,
+                child: Text(
+                  "Log In",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                color: Color(0xff3277D8),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6))),
               ),
             ),
           ],
@@ -240,13 +296,32 @@ class CheckoutState extends State<CheckoutPage>{
       ),
     );
   }
-  double tinhtien(double distance){
-    if(distance < 2){
+
+  Future _errAlert(BuildContext context, String err) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Failed login'),
+          content: Text('$err'),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  double tinhtien(double distance) {
+    if (distance < 2) {
       return distance * 14.500;
     } else {
-      return 29.000 + (distance - 2)*5.500;
+      return 29.000 + (distance - 2) * 5.500;
     }
   }
 }
-
-

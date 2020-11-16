@@ -10,9 +10,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) => <String, dynamic>{
-  'transactionId': instance.transactionId,
   'transactionDetailsId': instance.transactionDetailsId,
   'senderId': instance.senderId,
-  'shipperId': instance.shipperId,
   'type': instance.type,
 };
