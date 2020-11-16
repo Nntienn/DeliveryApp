@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:delivery_app/Src/api_util/checkout.dart';
 import 'package:http/http.dart' as http;
 
+import 'main_page.dart';
+
 class CheckoutPage extends StatefulWidget {
   Billing bill;
 
@@ -48,7 +50,7 @@ class CheckoutState extends State<CheckoutPage> {
     if (response.statusCode == 201) {
       await api.postTransaction(response, senderId);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HistoryPage()));
+          context, MaterialPageRoute(builder: (context) => MainPage(sIndex : 2)));
     } else {
       _errAlert(context, "The system is in error");
     }

@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
           if (user != null) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MainPage()));
+                context, MaterialPageRoute(builder: (context) => MainPage(sIndex: 0,)));
           } else {
             print('Error');
           }
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MainPage()));
+                                  builder: (context) => MainPage(sIndex: 0,)));
                         } else {
                           print('Error');
                         }
@@ -206,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
         Wallet wallet = await _loginBloc.convertJsonToWallet(walletResponse);
         save.saveBalance(wallet.amount);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
+            context, MaterialPageRoute(builder: (context) => MainPage(sIndex: 0,)));
       } else if (checkRole.compareTo("fail") == 0) {
         _validationBloc.setPhoneNumberControllerError(
             "This phone number is registered in a different role.");
@@ -236,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
           Wallet wallet = await _loginBloc.convertJsonToWallet(walletResponse);
           save.saveBalance(wallet.amount);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPage()));
+              context, MaterialPageRoute(builder: (context) => MainPage(sIndex: 0,)));
         } else if (checkRole.compareTo("fail") == 0) {
           _validationBloc.setPhoneNumberControllerError(
               "This phone number is registered in a different role.");

@@ -136,7 +136,7 @@ class OtpPage extends StatelessWidget {
               child: FlatButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => MainPage()));
+                      context, MaterialPageRoute(builder: (context) => MainPage(sIndex: 0,)));
                 },
                 color: kPrimaryColor,
                 textColor: Colors.white,

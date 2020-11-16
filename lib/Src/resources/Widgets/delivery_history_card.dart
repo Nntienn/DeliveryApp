@@ -14,8 +14,6 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(history.time);
-    print('thuandeptrai');
     return GestureDetector(
       onTap: press,
       child: Container(

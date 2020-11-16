@@ -40,7 +40,7 @@ class _MyAppState extends State<LoadingPage> {
         style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
       ),
       seconds: 2,
-      navigateAfterSeconds: MainPage(),
+      navigateAfterSeconds: MainPage(sIndex: 0,),
       image: new Image.asset(
           'assets/loading.gif'),
       backgroundColor: Colors.black,

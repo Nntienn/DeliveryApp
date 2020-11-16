@@ -327,7 +327,7 @@ class _RegisterPageState extends State<RegisterPage> {
             await saveSender(_phone);
             await saveBalance(_phone);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MainPage()));
+                context, MaterialPageRoute(builder: (context) => MainPage(sIndex: 0,)));
           }
         }
       } else {

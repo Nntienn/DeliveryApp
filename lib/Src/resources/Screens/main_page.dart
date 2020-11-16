@@ -10,15 +10,18 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
+  int sIndex;
+  MainPage({this.sIndex});
   @override
   State<StatefulWidget> createState() {
-    return MyPageState();
+    return MyPageState(sIndex);
   }
 }
 
 class MyPageState extends State<MainPage> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-  int _selectedIndex = 0;
+  int sIndex;
+  MyPageState(this.sIndex);
   bool btopleft = false;
 
   List<Widget> _widgetOptions = <Widget>[
@@ -46,10 +49,10 @@ class MyPageState extends State<MainPage> {
           topleft(),
         ],
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: _widgetOptions.elementAt(sIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
+        currentIndex: sIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: [
@@ -116,7 +119,7 @@ class MyPageState extends State<MainPage> {
             });
           }
           setState(() {
-            _selectedIndex = index;
+            sIndex = index;
           });
         },
       ),
