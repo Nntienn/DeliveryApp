@@ -43,7 +43,7 @@ class CheckoutState extends State<CheckoutPage> {
         receiverPhoneController.text,
         bill.rAddress,
         bill.sAddress,
-        "sending");
+        "UnFinished");
     String senderId = await _save.getId();
     http.Response response = await api.postTransactionDetail(checkoutModel);
     print(response.body);

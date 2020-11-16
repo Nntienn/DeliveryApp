@@ -32,6 +32,9 @@ class ProfileState extends State<ProfilePage>{
     double balance = await save.getBalance();
     _wallet = balance.toString();
     _officeAddress = await save.getWorkAddress();
+    if (_officeAddress == null) {
+      _officeAddress = "";
+    }
     List<String> list = List();
     list.add(_phone);
     list.add(_address);
