@@ -17,11 +17,12 @@ class HistoryApi {
 
   Future<List<Transaction>> getListTransactionTypeSending(List<Transaction> list) async {
     List<Transaction> listResult = List();
-    list.forEach((element) {
-      if (element.type.compareTo("sending") == 0) {
-        listResult.add(element);
+    for (int i = 0; i < list.length; i++) {
+      if (list[0].type.compareTo("Sending") == 0 || list[0].type.compareTo("sending") == 0) {
+        listResult.add(list[i]);
       }
-    });
+    }
+    print(listResult.length);
     return listResult;
   }
 

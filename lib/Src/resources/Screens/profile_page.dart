@@ -86,6 +86,7 @@ class ProfileState extends State<ProfilePage>{
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
       child: FutureBuilder(
+        initialData: [],
         future: save.getName(),
         builder: (context, snapshot) => Text(
           snapshot.data,

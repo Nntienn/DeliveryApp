@@ -19,8 +19,8 @@ class _HistoryPageState extends State<HistoryPage> {
   HistoryApi api = new HistoryApi();
 
   Future<List<History_Model>> getListTransaction() async {
+    print('vao roi');
     String senderId = await save.getId();
-    print(senderId);
     Response response = await api.getTransactionBySenderID(senderId);
     List<Transaction> list = await api.convertJsonToListTransaction(response);
     List<Transaction> listTransactionTypeSending =
@@ -33,8 +33,7 @@ class _HistoryPageState extends State<HistoryPage> {
       print(json.body);
       TransactionDetail transactionDetail =
       await api.convertJsonToTransactionDetail(json);
-      print(transactionDetail.transactionDetailsId.toString() +
-          transactionDetail.receiverAddress);
+
       listHistoryModel.add(new History_Model(
           listTransactionTypeSending[i].type,
           transactionDetail.senderAddress,

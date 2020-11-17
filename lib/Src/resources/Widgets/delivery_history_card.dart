@@ -23,7 +23,7 @@ class ItemCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width*0.6,
+                    width: MediaQuery.of(context).size.width*0.6,
                     child: Text('From:' + history.senderAddress, overflow: TextOverflow.ellipsis,)),
                 Spacer(),
                 Container(
