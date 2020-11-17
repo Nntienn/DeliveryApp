@@ -29,7 +29,7 @@ class ItemCard extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 22, 0),
                   child: Text(
-                    history.price.toString() + 'Vnđ',//thay bằng số tiền
+                    history.price.toStringAsFixed(3) + 'Vnđ',//thay bằng số tiền
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 )
